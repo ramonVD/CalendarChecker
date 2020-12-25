@@ -1,0 +1,115 @@
+.selected{
+	background-color: lightblue;
+}
+
+.textLink {
+	 cursor:pointer;
+}
+
+.mainPageIcon{
+	width:35px;
+	height: auto;
+	border: 1px solid black;
+}
+
+.generateTableButton{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.mainGetResultsRow{
+	min-height: 135px;
+	background-color: #ffffff;
+}
+
+.infoPop {
+	margin-left: 5px;
+	padding: 2px 8px 2px 8px;
+	border-radius: 3px;
+	border: 1px solid blue;
+	cursor: pointer;
+	color: blue;
+}
+
+.selectButton {
+	position: relative;
+	top: 0;
+	left: 103%;
+}
+
+.deSelectButton {
+	position: relative;
+	top: 0;
+	left: 103%;
+}
+.results {	
+	background-color: white;	
+	overflow-y: auto;
+}
+
+@media (min-height: 700px) {
+	.results {
+		height: 400px;
+	}
+
+
+}
+
+@media (max-height: 699px) {
+	.results {
+		min-height: 150px;
+	}
+
+}
+
+@media (max-width: 350px) {
+			.insideResultsRow {
+				font-size:0.8em;
+		padding: 2px;
+		cursor: pointer;
+	}
+}
+@media (max-width: 649px) {
+			.insideResultsRow {
+		padding: 2px;
+		cursor: pointer;
+	}
+
+	.insideResultsRow:hover{
+		border: 1px groove #57a8f2;	
+		padding: 1px;
+		border-radius: 2px;
+	}
+}
+
+@media (min-width: 650px) {
+	.insideResultsRow {
+		padding: 8px;
+		cursor: pointer;
+		font-size: 1.1em;
+	}
+
+	.insideResultsRow:hover{
+		border: 1px groove #57a8f2;	
+		padding: 7px;
+		border-radius: 2px;
+	}
+}
+
+.pressMeButton {
+  animation-name: pressMeButtonRadiate;
+  animation-duration: 1500ms;
+  animation-delay: 2200ms;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+/*Adapted from http://www.tipue.com/blog/css-pulse-buttons/*/
+@keyframes pressMeButtonRadiate {
+  0% { box-shadow: 0 0 0 0px rgba(0, 191, 255,0.4);
+
+  }
+  100% {
+    box-shadow: 0 0 0 22px rgba(0, 191, 255,0);
+  }
+}
