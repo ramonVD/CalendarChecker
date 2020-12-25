@@ -50,7 +50,7 @@ class ComponentDirector extends React.Component {
 		const eventArray = getFilteredEvents(this.state.storedCalendarData, options);
 		const selectedEvents = getSelectedEventsArray(eventArray, this.state.selectedEvents, this.state.orderingAsc, false);
 		const resultsExist = (this.state.storedCalendarData !== undefined);
-		let resultsButtonName = (resultsExist) ? "Taula generada" : "Carrega un calendari per generar una taula";
+		let resultsButtonName = (resultsExist) ? "Taula generada ↴" : "Carrega un calendari per generar una taula";
 		return (
 			<div className="container" id="resultsDiv">
 		        <EventResultsUI filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
@@ -58,26 +58,24 @@ class ComponentDirector extends React.Component {
 		          filteringByWords={this.state.filteringByWords} words={this.state.words}
 		          customURL={this.state.customURL} selectedCalendar={this.state.selectedCalendar} updateStoredData={this.updateStoredData}
 		          changeProperty={this.changeProperty} eventsArray={eventArray} 
-		          selectedEvents={selectedEvents} resultsExist={resultsExist} 
+		          selectedEvents={selectedEvents} resultsExist={resultsExist} colapseOpcButton={toggleColapsableCaretButton}
 		          canLoadNewCalendar={this.state.customURL !== this.state.oldCustomURL || (this.state.oldSelectedCalendar !== this.state.selectedCalendar)} />
 		          <div className="row justify-content-center mb-3">
-		         <div className="d-grid gap-2 col-6 mx-auto">
-			          <button className="btn btn-lg btn-dark btn-block" type="button" data-bs-toggle="collapse" data-bs-target="#colapsaOpcions" 
-						aria-expanded="false" aria-controls="colapsaOpcions"
-						onClick={() => { let colapsaOpc = document.getElementById("colapsaOpcions");
-										setTimeout( () => {if (colapsaOpc.classList.contains("show")) { colapsaOpc.scrollIntoView();}}, 400);
-								}}>
-						    Opcions
-					   </button>
-				</div>
-				<div className="d-grid gap-2 col-6 mx-auto">
-						<button className={"btn btn-primary btn-lg"} type="button" disabled={!resultsExist} id="taulaButton"
-							onClick={() => { if (resultsExist && selectedEvents.length > 0) {
-								setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
-								}}}>
-							    {resultsButtonName}
-						  </button>
-				</div>
+			          <div className="d-grid gap-2 col-6 mx-auto">
+							<button className={"btn btn-primary btn-lg"} type="button" disabled={!resultsExist} id="taulaButton"
+								onClick={() => { if (resultsExist && selectedEvents.length > 0) {
+									setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
+									}}}>
+								    {resultsButtonName}
+							  </button>
+					 </div>
+			         <div className="d-grid gap-2 col-6 mx-auto">
+				          <button className="btn btn-lg btn-dark btn-block lh-1" type="button" data-bs-toggle="collapse" data-bs-target="#colapsaOpcions" 
+							aria-expanded="false" aria-controls="colapsaOpcions" id="colapsaButton"
+							onClick={() => { toggleColapsableCaretButton("Opcions ", "colapsaButton", "colapsaOpcions");}}>
+							    Opcions ▾
+						   </button>
+						</div>
 				</div>
 				<div className="collapse mb-3" id="colapsaOpcions">
 					<div className="row border border-2 gx-5 bg-white">
@@ -174,5 +172,16 @@ function propertyModifiesEvents(propertyName) {
 	}
 }	
 */
+
+//Shoulda made this a component
+function toggleColapsableCaretButton(textNoCaret, buttonId, colapsableId) {
+	let colapsaDiv = document.getElementById(colapsableId);
+	let colapsaButton = document.getElementById(buttonId);
+	if (colapsaDiv === null || colapsaDiv === undefined || colapsaButton === null || colapsaButton === undefined) { return; }
+
+	setTimeout( () => {if (colapsaDiv.classList.contains("show")) { colapsaButton.scrollIntoView();}
+	let caretText = (!colapsaDiv.classList.contains("show")) ? textNoCaret + "▾" : textNoCaret + "▴";
+	colapsaButton.innerText = caretText;}, 400);
+}
 
 export default ComponentDirector;

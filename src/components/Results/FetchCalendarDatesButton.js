@@ -26,7 +26,7 @@ class FetchCalendarDatesButton extends React.Component {
 		} else if (this.state.error === -2) {
 			fetchDataButtonName = "Adreça del calendari incorrecta, reintenta-ho!";
 		} else {
-			fetchDataButtonName = (this.props.canLoadNewCalendar) ? "◂⠀Carrega les dades del calendari" : "Calendari carregat";
+			fetchDataButtonName = (this.props.canLoadNewCalendar) ? "Carrega les dades del calendari⠀▸" : "Calendari carregat";
 		}
 		return (
 			<button className={"btn btn-primary btn-lg lh-sm" + pressMeAnimation} id="fetchCalendarBtn" onClick={() => {

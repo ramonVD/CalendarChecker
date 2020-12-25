@@ -8,7 +8,7 @@ import "../../styles/EventResultsUI.css";
 /*Dema - que al titol llistat d'events ->posi calendari no carregat... i tal i que generant taula sigui un boto amb link...
 POTSER QUE SIGUIN 2 LINIES*/
 
-class ResultsContainer extends React.Component {
+class EventResultsUI extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggleSelectedElement = this.toggleSelectedElement.bind(this);
@@ -16,23 +16,28 @@ class ResultsContainer extends React.Component {
 
 	render() {
 		let activeFiltersText = [];
-		if (this.props.filteringByStartDate) { activeFiltersText.push(<li key="initial">{"L'event passa després del " + formatDate(new Date(this.props.startDate), "dd-mm-yyyy")}</li>); }
-		if (this.props.filteringByEndDate) { activeFiltersText.push(<li key="final">{"L'event passa abans del " + formatDate(new Date(this.props.endDate), "dd-mm-yyyy")}</li>); }
-		if (this.props.filteringByWords) { activeFiltersText.push(<li key="words">{"L'event conté alguna de les paraules clau - " + this.props.words}</li>); }
+		if (this.props.filteringByStartDate) { activeFiltersText.push(<li key="initial">{"Events que passen després del " + formatDate(new Date(this.props.startDate), "dd-mm-yyyy")}</li>); }
+		if (this.props.filteringByEndDate) { activeFiltersText.push(<li key="final">{"Events que passen abans del " + formatDate(new Date(this.props.endDate), "dd-mm-yyyy")}</li>); }
+		if (this.props.filteringByWords) { activeFiltersText.push(<li key="words">{"Events que contenen alguna de les paraules - " + this.props.words}</li>); }
 		let finalFilterText = (activeFiltersText.length) > 0 ? <ul className="text-center">{activeFiltersText}</ul> : 
 		<ul className="list-unstyled text-center"><li key="none">Cap (Llistarà tots els events al calendari)</li></ul>
-		let eventsTitle ="Events al calendari";
+		let eventsTitle =<span key="wtf">Events al calendari</span>;
 		let linkToTable = [];
 		if (this.props.eventsArray.length > 0) { eventsTitle += " - " + this.props.selectedEvents.length + "/" +  this.props.eventsArray.length + " events seleccionats"; }
-		else { linkToTable = <span> - <span className="textLink text-primary" title="Cal que carreguis un calendari amb el botó de sota!" onClick={() => 
-								{ setTimeout( () => {document.getElementById("fetchCalendarBtn").scrollIntoView();} , 200);
+		else { linkToTable = <span key="wtf2"> - <span className="textLink text-danger" title="Cal que carreguis un calendari amb el botó de sota!" onClick={() => 
+								{ 	let calendarBtn = document.getElementById("fetchCalendarBtn");
+									if(!(calendarBtn).classList.contains("shakeMe")) {
+										calendarBtn.classList.add("shakeMe");
+										setTimeout( () => {calendarBtn.classList.remove("shakeMe");} , 1200)
+									} 
+									setTimeout( () => {calendarBtn.scrollIntoView();} , 0);
 								}}>cap calendari carregat</span></span>}
 		const hiddenButton = (this.props.resultsExist) ? " " : " d-none";
 		return (
 			<div className="container-fluid">
 				<div className="container-fluid mt-3">
 				<div className="row">
-					<p className="lead text-center fw-bold">{[eventsTitle, linkToTable]}</p>
+					<p className="lead text-center fw-bold" >{[eventsTitle, linkToTable]}</p>
 				</div>
 				<div className="row justify-content-center mb-3">
 					<div className="col-6 text-end">
@@ -43,19 +48,19 @@ class ResultsContainer extends React.Component {
 					<div className="col-4 text-start">
 						<button className={"btn btn-link" + hiddenButton}
 						onClick={() => {this.props.changeProperty("selectedEvents", []);}}>
-						Deselecciona tots</button>
+						Desselecciona tots</button>
 					</div>
 					<div className="col-2 text-center">
 						<button className={"btn btn-link float-right" + hiddenButton}
 						onClick={() => { setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
 								}}>
-						Taula</button>
+						Taula↴</button>
 			 		</div>
 			 	</div>
 				<div className="row justify-content-center lead">
-					<div className="col text-center">Nom de l'event</div>
-					<div className="col text-center">Data inicial</div>
-					<div className="col text-center">Data final</div>
+					<div className="col text-center" key="nom">Nom de l'event</div>
+					<div className="col text-center" key="datai">Data inicial</div>
+					<div className="col text-center" key="dataf">Data final</div>
 				</div>
 				</div>
 
@@ -65,21 +70,21 @@ class ResultsContainer extends React.Component {
 
 				<div className="container-fluid mb-5 mt-3 border border-2 mainGetResultsRow">
 					<div className="row justify-content-center align-items-center">
-						<div className="col mt-3">
-							<CalendarSelector selectedCalendar={this.props.selectedCalendar} 
-							canLoadNewCalendar={this.props.canLoadNewCalendar} changeProperty={this.props.changeProperty} customURL={this.props.customURL} />
-						</div>
 						<div className="col text-center mt-3">
 								<FetchCalendarDatesButton canLoadNewCalendar={this.props.canLoadNewCalendar} selectedCalendar={this.props.selectedCalendar}
 								updateStoredData={this.props.updateStoredData} resultsExist={this.props.resultsExist} />
 					 	</div>
+						<div className="col mt-3">
+							<CalendarSelector selectedCalendar={this.props.selectedCalendar} 
+							canLoadNewCalendar={this.props.canLoadNewCalendar} changeProperty={this.props.changeProperty} customURL={this.props.customURL} />
+						</div>
 						<div className="col">
-						<p className="text-center mt-3 fs-5">Filtres&nbsp;&nbsp;(<span className="textLink text-primary" 
+						<p className="text-center mt-3 filterList fs-5">Filtres actius&nbsp;&nbsp;(<span className="textLink text-primary" 
 							onClick={() => { let colapseDiv = document.getElementById("colapsaOpcions");
 											if (!colapseDiv.classList.contains("show")) {
 												colapseDiv.classList.add("show"); 
 											}
-											setTimeout( () => {document.getElementById("colapsaOpcions").scrollIntoView();} , 200);
+											setTimeout( () => {this.props.colapseOpcButton("Opcions ", "colapsaButton", "colapsaOpcions");} , 200);
 								}}>Canvia'ls</span>)</p>
 						{finalFilterText}
 						</div>
@@ -126,14 +131,14 @@ function generateRowsFromEvents(eventsArray, selectedEvents, callback) {
 		selectedElement = foundElementUID(element.uid, selectedEvents) ? " selected" : "";
 		startDate = new Date(element.start).toLocaleDateString();
 		finalDate = new Date(element.end).toLocaleDateString();
-		rows.push(<div className={"row insideResultsRow" + selectedElement} 
+		rows.push(<div className={"row insideResultsRow " + selectedElement} 
 				title="Prem amb el ratolí per seleccionar/deseleccionar l'event" key={element.uid} onClick={() => {callback(element);}}>
-				<div className="col text-center">{element.summary}</div>
-				<div className="col text-center">{startDate}</div>
-				<div className="col text-center">{finalDate}</div>
+				<div className="col text-center" key={"ct"+element.uid}>{element.summary}</div>
+				<div className="col text-center" key={"cdi"+element.uid}>{startDate}</div>
+				<div className="col text-center" key={"cde"+element.uid}>{finalDate}</div>
 				</div>);
 	}
 	return rows;
 }
 
-export default ResultsContainer;
+export default EventResultsUI;

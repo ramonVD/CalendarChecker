@@ -12,12 +12,13 @@ export class CalendarSelector extends React.PureComponent {
 		const options = DEFAULT_CALENDARS_NAME.map( function(element) {
 			return (<option value={element} key={element}>{DEFAULT_CALENDARS_TEXT[element]}</option>);
 		});	
-		const btnText = "Escull calendari";
+		/*const btnText = "Escull calendari";
+		<div className="row">
+				<p className="mb-2 fs-5">{btnText}</p>
+			</div>*/
 		return (
 		<div className="container-fluid">
-			<div className="row">
-				<p className="mb-2 fs-5">{btnText}</p>
-			</div>
+			
 			<div className="row">
 				<select className="form-select" aria-label=".form-select-lg example" value={this.props.selectedCalendar}
 			onChange={(event) => {this.props.changeProperty("selectedCalendar", event.target.value);}}>
