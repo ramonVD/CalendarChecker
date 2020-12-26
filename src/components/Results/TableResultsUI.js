@@ -1,5 +1,6 @@
 import React from "react";
 import {formatDateCatalan, reverseArray} from "../utils/CalendarEventsParser";
+import CopyTextButton from "./CopyTextButton";
 import "../../styles/TableResultsUI.css";
 
 class EndResultTables extends React.PureComponent {
@@ -14,7 +15,7 @@ class EndResultTables extends React.PureComponent {
 		let counter = 1;
 		let normalTableRows = [];
 		let codeTableRows = [];
-
+		const notShowingYear = (this.props.options.notShowingYear === undefined) ? "true" : this.props.options.notShowingYear;
 		//Ordenada sempre la llista d'events
 		eventArray = orderArrayDescDates(eventArray);
 		if (!iocStyleTable && !orderingAsc) { eventArray = reverseArray(eventArray); }
@@ -22,14 +23,14 @@ class EndResultTables extends React.PureComponent {
 		for (let i = 0; i < eventArray.length; i++){
 			event = eventArray[i];
 			currentDate = new Date(event.start);
-			formattedStartData = formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
+			formattedStartData = formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
 
 			//A la taula estil ioc juntem publicació i validació. Només passa si són events consecutius
 			if (iocStyleTable && i < eventArray.length - 1 && eventArray[i].summary.search(/validació/g) >= 0 && eventArray[i+1].summary.search(/notes/g) >= 0) {
 				let nextEvent = eventArray[i+1];
 				currentDate = new Date(nextEvent.start);
-				correctedEndDate = isNaN(nextEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
-				normalTableRows.push(<tr key={"normalTable"+counter}><td>Publicació-validació</td><td>{formattedStartData}</td>
+				correctedEndDate = isNaN(nextEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-Publicació</td><td>{formattedStartData}</td>
 									<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Publicació-validació</td>"}<br />
 						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + formattedStartData + "';var text" + counter++ +"= div.textContent;</script>"}<br />
@@ -38,7 +39,7 @@ class EndResultTables extends React.PureComponent {
 				i++;
 			} else {
 				currentDate = new Date(event.end);
-				correctedEndDate = isNaN(event.end) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
+				correctedEndDate = isNaN(event.end) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>{event.summary}</td><td>{formattedStartData}</td>
 											<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>" + event.summary + "</td>"}<br />
@@ -58,8 +59,10 @@ class EndResultTables extends React.PureComponent {
 		</div>
 		<div className="row mb-4 mt-5">
 			<div className="col">
+			<CopyTextButton linkedId="textTaulaNoCode" />
 				<p className="text-center fs-5 mb-5">Taula amb els events seleccionats</p>
-				<table className="table table-condensed table-hover table-bordered">
+				<div id="textTaulaNoCode">
+				<table className="table table-condensed table-hover table-bordered" >
 		  			<caption>Calendari del trimestre</caption>
 		  			<tbody>
 					<tr>
@@ -70,10 +73,12 @@ class EndResultTables extends React.PureComponent {
 					{normalTableRows}
 					</tbody>
 				</table>
-
+				</div>
 			</div>
 			<div className="col">
+				<CopyTextButton linkedId="textTaulaCode" />
 				<p className="text-center mb-5 fs-5">{tableTitle}</p>
+				<div id="textTaulaCode">
 				<span className="text-start tableCode">{`
 				<table class="table table-condensed table-hover table-bordered" style="min-width:300px;">
 					<caption>Calendari del trimestre</caption>
@@ -87,6 +92,7 @@ class EndResultTables extends React.PureComponent {
 					{codeTableRows}
 				</span>
 				<span className="text-start tableCode">{"</tbody></table>"}</span>
+				</div>
 			</div>
 		</div>
 		</div>

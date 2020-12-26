@@ -184,8 +184,10 @@ function zerosToTheLeft(originalStr, minLength) {
 	return ( ( "0" * numberOfZeroes) + originalStr );
 }
 
-export function formatDateCatalan(diaSetmana, dia, mes, any) {
+/*Not returning year by default since it's what was originally done*/
+export function formatDateCatalan(diaSetmana, dia, mes, any, noYear) {
 	const dies = ["diumenge", "dilluns","dimarts","dimecres","dijous","divendres","dissabte"];
 	const mesos = ["gener","febrer","març","abril","maig","juny","juliol","agost","septembre","octubre","novembre","desembre"];
-	return (dies[diaSetmana] + " " + dia + " de " + mesos[mes] + " de " + any);
+	if (noYear !== undefined && !noYear) { return (dies[diaSetmana] + " " + dia + " de " + mesos[mes] + " de " + any);}
+	return (dies[diaSetmana] + " " + dia + " de " + mesos[mes]);
 }

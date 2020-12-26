@@ -9,6 +9,7 @@ class OrderingOptions extends React.PureComponent {
 		const orderingAsc = this.props.options.orderingAsc;
 		const iocStyleTable = this.props.options.iocStyleTable;
 		const acceptWrongEndDate = this.props.options.acceptWrongEndDate;
+		const notShowingYear = this.props.options.notShowingYear;
 		return (
 			<div className="container-fluid">
 			<div className="row justify-content-end mt-1">
@@ -55,11 +56,18 @@ class OrderingOptions extends React.PureComponent {
 					  	<label className="form-check-label" htmlFor="acceptWrongEndDate">Inclou events amb dates finals no definides</label>
 					</div>
 				</div>
-				<div className="row my-1" title="S'ajunten validació i publicació en una sola fila, si apareixen com events consecutius. Sempre posa les dates de manera ascendent.">
-					<div className="form-check form-switch form-check-inline mb-3 mx-1">
+				<div className="row" title="S'ajunten validació i publicació en una sola fila, si apareixen com events consecutius. Sempre posa les dates de manera ascendent i no apareix l'any.">
+					<div className="form-check form-switch form-check-inline mx-1">
 						<input className="form-check-input" type="checkbox" id="iocStyleTable" checked={iocStyleTable} 
 					  onChange={() => {this.props.changeProperty("iocStyleTable", !iocStyleTable);}} />
 					  	<label className="form-check-label" htmlFor="iocStyleTable">Genera taula a l'estil GAM del GES</label>
+					</div>
+				</div>
+				<div className="row my-2" title="Per defecte al GES no es posa l'any.">
+					<div className="form-check form-switch form-check-inline mb-3 mx-1">
+						<input className="form-check-input" type="checkbox" id="notShowingYear" checked={!notShowingYear} 
+					  onChange={() => {this.props.changeProperty("notShowingYear", !notShowingYear);}} />
+					  	<label className="form-check-label" htmlFor="notShowingYear">Inclou l'any al text de la taula</label>
 					</div>
 				</div>
 			</div>

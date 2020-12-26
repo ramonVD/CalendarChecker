@@ -30,6 +30,7 @@ class ComponentDirector extends React.Component {
 			words: defaultWords,
 			acceptWrongEndDate: true,
 			iocStyleTable: true,
+			notShowingYear: true,
 			orderingByInitialDate: true,
 			orderingAsc: true,
 			customURL: "https://",
@@ -142,7 +143,8 @@ class ComponentDirector extends React.Component {
 						orderingAsc: this.state.orderingAsc,
 						orderingByInitialDate: this.state.orderingByInitialDate,
 						acceptWrongEndDate: this.state.acceptWrongEndDate,
-						iocStyleTable: this.state.iocStyleTable
+						iocStyleTable: this.state.iocStyleTable,
+						notShowingYear: this.state.notShowingYear
 					}
 		if (!this.state.filteringByWords) { delete options.searchWord; }
 		if (isNaN(options.initialDate) || !this.state.filteringByStartDate) { delete options.initialDate; }
