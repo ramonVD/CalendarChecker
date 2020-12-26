@@ -9,7 +9,7 @@ import {loadPropertyCookie} from "./utils/CookieFunctions";
 
 
 /*Loading old values from cookies for calendar name and all checkboxes. These are the default values before cookies.*/
-let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: true, iocStyleTable: true, notShowingYear: true};
+let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: "true", iocStyleTable: "true", notShowingYear: "true"};
 /* TO-DO DEMÀ 24/12/21 
 Deixar-ho tot maco (muntar estils wapos pels components, cal muntar tooltips).*/ 
 
@@ -185,8 +185,9 @@ function propertyModifiesEvents(propertyName) {
 }	
 */
 
-function strToBool(string) {
-	if (string.toLowerCase() === "true") { return true;}
+function strToBool(str) {
+	const lowStr = str.toLowerCase();
+	if (lowStr === "true") { return true;}
 	return false;
 }
 
