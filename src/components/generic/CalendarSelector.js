@@ -1,4 +1,5 @@
 import React from "react";
+import {savePropertyCookie} from "../utils/CookieFunctions";
 
 export const DEFAULT_CALENDARS_NAME = ["GES", "BATX", "Custom"];
 const DEFAULT_CALENDARS_TEXT = {GES: "Calendari del GES", BATX: "Calendari de BATX", Custom: "Altre (escriu direcció HTML de l'arxiu ical)" };
@@ -21,7 +22,9 @@ export class CalendarSelector extends React.PureComponent {
 			
 			<div className="row">
 				<select className="form-select" aria-label=".form-select-lg example" value={this.props.selectedCalendar}
-			onChange={(event) => {this.props.changeProperty("selectedCalendar", event.target.value);}}>
+			onChange={(event) => {const newCalendarName = event.target.value;
+								savePropertyCookie("selectedCalendar", newCalendarName);
+								this.props.changeProperty("selectedCalendar", newCalendarName);}}>
 				{options}
 				</select>
 			</div>

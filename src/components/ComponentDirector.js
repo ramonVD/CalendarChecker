@@ -5,7 +5,11 @@ import FilteringOptions from "./FilteringAndOrdering/FilteringOptions";
 import OrderingOptions from "./FilteringAndOrdering/OrderingOptions";
 import {DEFAULT_CALENDARS_NAME} from "./generic/CalendarSelector";
 import {getFilteredEvents, formatDate, getSelectedEventsArray} from "./utils/CalendarEventsParser";
+import {loadPropertyCookie} from "./utils/CookieFunctions";
 
+
+/*Loading old values from cookies for calendar name and all checkboxes. These are the default values before cookies.*/
+let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: true, iocStyleTable: true, notShowingYear: true};
 /* TO-DO DEMÀ 24/12/21 
 Deixar-ho tot maco (muntar estils wapos pels components, cal muntar tooltips).*/ 
 
@@ -13,14 +17,20 @@ class ComponentDirector extends React.Component {
 	constructor(props) {
 		super(props);
 		this.props = props;
-		const DEFAULTDAYSBEFORE = 7;
-		const DEFAULTDAYSAFTER = 100;
-		const defaultStartDate = formatDate(new Date(Date.now() - DEFAULTDAYSBEFORE * 24 * 60 * 60 * 1000), "yyyy-mm-dd");
-		const defaultEndDate = formatDate(new Date(Date.now() + (DEFAULTDAYSAFTER * 24 * 60 * 60 * 1000)), "yyyy-mm-dd");
+		const DEFAULT_DAYS_BEFORE = 7;
+		const DEFAULT_DAYS_AFTER = 100;
+		const defaultStartDate = formatDate(new Date(Date.now() - DEFAULT_DAYS_BEFORE * 24 * 60 * 60 * 1000), "yyyy-mm-dd");
+		const defaultEndDate = formatDate(new Date(Date.now() + (DEFAULT_DAYS_AFTER * 24 * 60 * 60 * 1000)), "yyyy-mm-dd");
 		const defaultWords = "lliurament, lliurment, validació, notes";
 
+		let cookieSelectedProperty;
+		for (let property in cookieProperties) {
+			cookieSelectedProperty = loadPropertyCookie(property);
+			if (cookieSelectedProperty !== undefined) { cookieProperties[property] = cookieSelectedProperty;}
+		}
+
 		this.state = {
-			selectedCalendar: DEFAULT_CALENDARS_NAME[0],
+			selectedCalendar: cookieProperties.selectedCalendar,
 			oldSelectedCalendar: undefined,
 			filteringByStartDate: true,
 			startDate: defaultStartDate,
@@ -28,9 +38,9 @@ class ComponentDirector extends React.Component {
 			endDate: defaultEndDate,
 			filteringByWords: true,
 			words: defaultWords,
-			acceptWrongEndDate: true,
-			iocStyleTable: true,
-			notShowingYear: true,
+			acceptWrongEndDate: strToBool(cookieProperties.acceptWrongEndDate),
+			iocStyleTable: strToBool(cookieProperties.iocStyleTable),
+			notShowingYear: strToBool(cookieProperties.notShowingYear),
 			orderingByInitialDate: true,
 			orderingAsc: true,
 			customURL: "https://",
@@ -93,12 +103,12 @@ class ComponentDirector extends React.Component {
 					<div className="mt-4">
 						    <TableResultsUI selectedEvents={selectedEvents} options={options} resultsExist={resultsExist} />
 					</div>
-		    	<div className="row mt-4 mb-2">
+		    	<div className="row mt-5 mb-2">
 		    		<p className="text-center"><small className="text-muted">Creat per Ramon Vicente en l'any 2020, primer any de la Pesta Corona. 
 					<a href="mailto:&#114;&#118;&#105;&#99;&#101;&#110;&#116;&#101;&#100;&#105;&#97;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;"
 					className="mx-3">Contacta</a>
 					<a href="https://ioc.xtec.cat/educacio/" target="_blank" rel="noopener noreferrer">
-						<img src="./MadeinIOC.png" alt="Fet a l'IOC" title="Fet a l'IOC" className="mainPageIcon mx-2 mt-1" />
+						<img src="./MadeinIOC.png" alt="Fet a l'IOC" title="Fet a l'IOC" className="mainPageIcon mx-2" />
 						</a>
 					</small></p>
 		    	</div>
@@ -174,6 +184,11 @@ function propertyModifiesEvents(propertyName) {
 	}
 }	
 */
+
+function strToBool(string) {
+	if (string.toLowerCase() === "true") { return true;}
+	return false;
+}
 
 //Shoulda made this a component
 function toggleColapsableCaretButton(textNoCaret, buttonId, colapsableId, focusOnButton) {

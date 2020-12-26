@@ -1,4 +1,5 @@
 import React from "react";
+import {savePropertyCookie} from "../utils/CookieFunctions";
 
 //should create a purecomponent for radios and checkboxes, or just a function to create em...
 
@@ -52,21 +53,24 @@ class OrderingOptions extends React.PureComponent {
 				<div className="row my-2" title="Hi ha events que no tenen data final, no per ser erronis sinó per com s'han creat.">
 					<div className="form-check form-switch form-check-inline mx-1">
 				 		<input className="form-check-input" type="checkbox" id="acceptWrongEndDate" checked={acceptWrongEndDate} 
-					  onChange={() => {this.props.changeProperty("acceptWrongEndDate", !acceptWrongEndDate);}} />
+					  onChange={() => {	savePropertyCookie("acceptWrongEndDate", !acceptWrongEndDate);
+					  					this.props.changeProperty("acceptWrongEndDate", !acceptWrongEndDate);}} />
 					  	<label className="form-check-label" htmlFor="acceptWrongEndDate">Inclou events amb dates finals no definides</label>
 					</div>
 				</div>
 				<div className="row" title="S'ajunten validació i publicació en una sola fila, si apareixen com events consecutius. Sempre posa les dates de manera ascendent i no apareix l'any.">
 					<div className="form-check form-switch form-check-inline mx-1">
 						<input className="form-check-input" type="checkbox" id="iocStyleTable" checked={iocStyleTable} 
-					  onChange={() => {this.props.changeProperty("iocStyleTable", !iocStyleTable);}} />
+					  onChange={() => { savePropertyCookie("iocStyleTable", !iocStyleTable);
+					  					this.props.changeProperty("iocStyleTable", !iocStyleTable);}} />
 					  	<label className="form-check-label" htmlFor="iocStyleTable">Genera taula a l'estil GAM del GES</label>
 					</div>
 				</div>
 				<div className="row my-2" title="Per defecte al GES no es posa l'any.">
 					<div className="form-check form-switch form-check-inline mb-3 mx-1">
 						<input className="form-check-input" type="checkbox" id="notShowingYear" checked={!notShowingYear} 
-					  onChange={() => {this.props.changeProperty("notShowingYear", !notShowingYear);}} />
+					  onChange={() => { savePropertyCookie("notShowingYear", !notShowingYear);
+					  					this.props.changeProperty("notShowingYear", !notShowingYear);}} />
 					  	<label className="form-check-label" htmlFor="notShowingYear">Inclou l'any al text de la taula</label>
 					</div>
 				</div>

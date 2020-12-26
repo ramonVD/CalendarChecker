@@ -10,7 +10,7 @@ class EndResultTables extends React.PureComponent {
 		const iocStyleTable = this.props.options.iocStyleTable;
 		let orderingAsc = this.props.options.orderingAsc;
 		if (!this.props.resultsExist) { return <div className="mb-5" id="taulaDiv"></div>; }
-		if (this.props.selectedEvents === undefined || this.props.selectedEvents.length < 1) { return <div className="text-center fs-5 mb-5" id="taulaDiv">Selecciona com a mínim un event del llistat per generar una taula</div>; }
+		if (this.props.selectedEvents === undefined || this.props.selectedEvents.length < 1) { return <div className="text-center fs-5 mb-5 mt-5" id="taulaDiv">Selecciona com a mínim un event del llistat per generar una taula</div>; }
 		let correctedEndDate, formattedStartData, currentDate, event;
 		let counter = 1;
 		let normalTableRows = [];
@@ -30,9 +30,9 @@ class EndResultTables extends React.PureComponent {
 				let nextEvent = eventArray[i+1];
 				currentDate = new Date(nextEvent.start);
 				correctedEndDate = isNaN(nextEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
-				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-Publicació</td><td>{formattedStartData}</td>
+				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-publicació</td><td>{formattedStartData}</td>
 									<td>{correctedEndDate}</td></tr>);
-				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Publicació-validació</td>"}<br />
+				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Validació-publicació</td>"}<br />
 						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + formattedStartData + "';var text" + counter++ +"= div.textContent;</script>"}<br />
 						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + correctedEndDate + "';var text" + counter++ +"= div.textContent;</script></tr>"}
 						</p>);
@@ -51,13 +51,15 @@ class EndResultTables extends React.PureComponent {
 		let tableTitle = "Codi de la taula (estil Miqui)";
 		return (
 		<div className="border border-2 px-1 rounded bg-white">
-		<div className="row mb-3 text-center">
+		<div className="row mb-1 text-center">
 			<div className="col">
-			<button className="btn btn-secondary mt-4" id="taulaDiv"
-			onClick={() => { setTimeout( () => {document.getElementById("resultsDiv").scrollIntoView();}, 200);}}>Torna al llistat d'events</button>
+			<button className="btn btn-secondary  btn-sm mt-4" id="taulaDiv"
+			onClick={() => { setTimeout( () => {document.getElementById("resultsDiv").scrollIntoView();}, 200);}}>
+			Torna al llistat d'events
+			</button>
 			</div>
 		</div>
-		<div className="row mb-4 mt-5">
+		<div className="row mb-4">
 			<div className="col">
 			<CopyTextButton linkedId="textTaulaNoCode" />
 				<p className="text-center fs-5 mb-5">Taula amb els events seleccionats</p>

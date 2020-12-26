@@ -63,8 +63,8 @@ class EventResultsUI extends React.Component {
 				 	</div>
 					<div className="row justify-content-center lead">
 						<div className="col text-center" key="nom">Nom de l'event</div>
-						<div className="col text-center" key="datai">Data inicial</div>
-						<div className="col text-center" key="dataf">Data final</div>
+						<div className="col text-center" key="datai">Data inici</div>
+						<div className="col text-center" key="dataf">Data acabament</div>
 					</div>
 				</div>
 
