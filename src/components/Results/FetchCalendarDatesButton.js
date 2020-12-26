@@ -67,7 +67,6 @@ function fetchDates(URL, callbackOK, callbackError) {
 	if (usedURL.search(/^https:\/\/calendar\.google\.com\//) < 0) {
 		setTimeout( () => {callbackError(-2);}, 200);
 	} else {
-		console.log(usedURL);
 		//const timeBeforeCheck = Date.now();
 		fetch(proxyUrl + usedURL, {
 			mode: 'cors',

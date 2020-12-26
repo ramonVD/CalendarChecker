@@ -72,7 +72,7 @@ class ComponentDirector extends React.Component {
 			         <div className="d-grid gap-2 col-6 mx-auto">
 				          <button className="btn btn-lg btn-dark btn-block lh-1" type="button" data-bs-toggle="collapse" data-bs-target="#colapsaOpcions" 
 							aria-expanded="false" aria-controls="colapsaOpcions" id="colapsaButton"
-							onClick={() => { toggleColapsableCaretButton("Opcions ", "colapsaButton", "colapsaOpcions");}}>
+							onClick={() => { toggleColapsableCaretButton("Opcions ", "colapsaButton", "colapsaOpcions", false);}}>
 							    Opcions ▾
 						   </button>
 						</div>
@@ -174,12 +174,12 @@ function propertyModifiesEvents(propertyName) {
 */
 
 //Shoulda made this a component
-function toggleColapsableCaretButton(textNoCaret, buttonId, colapsableId) {
+function toggleColapsableCaretButton(textNoCaret, buttonId, colapsableId, focusOnButton) {
 	let colapsaDiv = document.getElementById(colapsableId);
 	let colapsaButton = document.getElementById(buttonId);
 	if (colapsaDiv === null || colapsaDiv === undefined || colapsaButton === null || colapsaButton === undefined) { return; }
 
-	setTimeout( () => {if (colapsaDiv.classList.contains("show")) { colapsaButton.scrollIntoView();}
+	setTimeout( () => {if (colapsaDiv.classList.contains("show") && focusOnButton) { colapsaButton.scrollIntoView();}
 	let caretText = (!colapsaDiv.classList.contains("show")) ? textNoCaret + "▾" : textNoCaret + "▴";
 	colapsaButton.innerText = caretText;}, 400);
 }

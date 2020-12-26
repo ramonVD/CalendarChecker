@@ -16,52 +16,56 @@ class EventResultsUI extends React.Component {
 
 	render() {
 		let activeFiltersText = [];
-		if (this.props.filteringByStartDate) { activeFiltersText.push(<li key="initial">{"Events que passen després del " + formatDate(new Date(this.props.startDate), "dd-mm-yyyy")}</li>); }
-		if (this.props.filteringByEndDate) { activeFiltersText.push(<li key="final">{"Events que passen abans del " + formatDate(new Date(this.props.endDate), "dd-mm-yyyy")}</li>); }
-		if (this.props.filteringByWords) { activeFiltersText.push(<li key="words">{"Events que contenen alguna de les paraules - " + this.props.words}</li>); }
-		let finalFilterText = (activeFiltersText.length) > 0 ? <ul className="text-center">{activeFiltersText}</ul> : 
+		if (this.props.filteringByStartDate) { activeFiltersText.push(<li key="initial">{"Events que passen després del " + formatDate(new Date(this.props.startDate), "dd-mm-yyyy") + "."}</li>); }
+		if (this.props.filteringByEndDate) { activeFiltersText.push(<li key="final">{"Events que passen abans del " + formatDate(new Date(this.props.endDate), "dd-mm-yyyy") + "."}</li>); }
+		if (this.props.filteringByWords) { activeFiltersText.push(<li key="words">{"Events que contenen alguna de les paraules - " + this.props.words + "."}</li>); }
+		let finalFilterText = (activeFiltersText.length) > 0 ? <ul className="text-left"><li className="miniLi">Apareixeràn a la llista els:</li>{activeFiltersText}</ul> : 
 		<ul className="list-unstyled text-center"><li key="none">Cap (Llistarà tots els events al calendari)</li></ul>
-		let eventsTitle =<span key="wtf">Events al calendari</span>;
-		let linkToTable = [];
-		if (this.props.eventsArray.length > 0) { eventsTitle += " - " + this.props.selectedEvents.length + "/" +  this.props.eventsArray.length + " events seleccionats"; }
-		else { linkToTable = <span key="wtf2"> - <span className="textLink text-danger" title="Cal que carreguis un calendari amb el botó de sota!" onClick={() => 
-								{ 	let calendarBtn = document.getElementById("fetchCalendarBtn");
+		let eventsTitle =<span key="eventsTitleName">Events al calendari</span>;
+		let linkToTable;
+		if (this.props.eventsArray.length > 0) { 
+			linkToTable = <span key="eventsTitleNonSelected">{" - " + this.props.selectedEvents.length + "/" +  this.props.eventsArray.length + " events seleccionats" }</span>
+					}
+		else { linkToTable = <span key="eventsTitleSelected"> - <span className="textLink text-danger" title="Cal que carreguis un calendari amb el botó de sota!"
+							onClick={() =>	{
+								 	let calendarBtn = document.getElementById("fetchCalendarBtn");
 									if(!(calendarBtn).classList.contains("shakeMe")) {
 										calendarBtn.classList.add("shakeMe");
 										setTimeout( () => {calendarBtn.classList.remove("shakeMe");} , 1200)
 									} 
 									setTimeout( () => {calendarBtn.scrollIntoView();} , 0);
-								}}>cap calendari carregat</span></span>}
+								}}>cap calendari carregat
+								</span></span>}
 		const hiddenButton = (this.props.resultsExist) ? " " : " d-none";
 		return (
 			<div className="container-fluid">
 				<div className="container-fluid mt-3">
-				<div className="row">
-					<p className="lead text-center fw-bold" >{[eventsTitle, linkToTable]}</p>
-				</div>
-				<div className="row justify-content-center mb-3">
-					<div className="col-6 text-end">
-						<button className={"btn btn-link" + hiddenButton}
-						 onClick={() => {this.props.changeProperty("selectedEvents", this.props.eventsArray.slice());}}>
-						 Selecciona tots</button>
+					<div className="row">
+						<p className="lead text-center fw-bold" >{[eventsTitle, linkToTable]}</p>
 					</div>
-					<div className="col-4 text-start">
-						<button className={"btn btn-link" + hiddenButton}
-						onClick={() => {this.props.changeProperty("selectedEvents", []);}}>
-						Desselecciona tots</button>
+					<div className="row justify-content-center mb-3">
+						<div className="col-6 text-end">
+							<button className={"btn btn-link" + hiddenButton}
+							 onClick={() => {this.props.changeProperty("selectedEvents", this.props.eventsArray.slice());}}>
+							 Selecciona tots</button>
+						</div>
+						<div className="col-4 text-start">
+							<button className={"btn btn-link" + hiddenButton}
+							onClick={() => {this.props.changeProperty("selectedEvents", []);}}>
+							Desselecciona tots</button>
+						</div>
+						<div className="col-2 text-center">
+							<button className={"btn btn-link float-right" + hiddenButton}
+							onClick={() => { setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
+									}}>
+							Taula↴</button>
+				 		</div>
+				 	</div>
+					<div className="row justify-content-center lead">
+						<div className="col text-center" key="nom">Nom de l'event</div>
+						<div className="col text-center" key="datai">Data inicial</div>
+						<div className="col text-center" key="dataf">Data final</div>
 					</div>
-					<div className="col-2 text-center">
-						<button className={"btn btn-link float-right" + hiddenButton}
-						onClick={() => { setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
-								}}>
-						Taula↴</button>
-			 		</div>
-			 	</div>
-				<div className="row justify-content-center lead">
-					<div className="col text-center" key="nom">Nom de l'event</div>
-					<div className="col text-center" key="datai">Data inicial</div>
-					<div className="col text-center" key="dataf">Data final</div>
-				</div>
 				</div>
 
 				<div className="container-fluid results border border-2 rounded shadow mb-4 mt-2" id="resultsRows">
@@ -84,12 +88,13 @@ class EventResultsUI extends React.Component {
 											if (!colapseDiv.classList.contains("show")) {
 												colapseDiv.classList.add("show"); 
 											}
-											setTimeout( () => {this.props.colapseOpcButton("Opcions ", "colapsaButton", "colapsaOpcions");} , 200);
+											setTimeout( () => {this.props.colapseOpcButton("Opcions ", "colapsaButton", "colapsaOpcions", true);} , 200);
 								}}>Canvia'ls</span>)</p>
 						{finalFilterText}
 						</div>
 					</div>
 				</div>
+
 	          </div>
 	        );
 	}

@@ -12,7 +12,7 @@ class OrderingOptions extends React.PureComponent {
 		return (
 			<div className="container-fluid">
 			<div className="row justify-content-end mt-1">
-				<p className="text-center">Ordenació d'events</p>
+				<p className="text-center">Ordenació dels events</p>
 			</div>
 				<div className="row">
 					<div className="col centeredInColumn">

@@ -8,7 +8,7 @@ class FilteringOptions extends React.PureComponent {
 
 			return (
 				<div className="mb-1 mt-1">
-				<p className="text-center">Filtres aplicats al llistat d'events</p>
+				<p className="text-center">Filtres aplicats als events</p>
 				<div className="row mb-0">
 					<div className="col">
 		  			  	<DatePicker label="Data inicial:" active={this.props.filteringByStartDate} date={this.props.startDate} key="startDate"

@@ -6,6 +6,12 @@
 	 cursor:pointer;
 }
 
+/*Text dins la llista de filtres, dient apareixeràn els:*/
+.miniLi {
+	list-style: none;
+	text-align: left;
+}
+
 .filterList{
 	margin-bottom: 0.6rem;
 }
