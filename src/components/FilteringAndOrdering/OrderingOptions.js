@@ -11,6 +11,7 @@ class OrderingOptions extends React.PureComponent {
 		const iocStyleTable = this.props.options.iocStyleTable;
 		const acceptWrongEndDate = this.props.options.acceptWrongEndDate;
 		const notShowingYear = this.props.options.notShowingYear;
+		const addEmptySpaceEndLine = this.props.options.addEmptySpaceEndLine;
 		return (
 			<div className="container-fluid">
 			<div className="row justify-content-end mt-1">
@@ -67,11 +68,20 @@ class OrderingOptions extends React.PureComponent {
 					</div>
 				</div>
 				<div className="row my-2" title="Per defecte al GES no es posa l'any.">
-					<div className="form-check form-switch form-check-inline mb-3 mx-1">
+					<div className="form-check form-switch form-check-inline mx-1">
 						<input className="form-check-input" type="checkbox" id="notShowingYear" checked={!notShowingYear} 
 					  onChange={() => { savePropertyCookie("notShowingYear", !notShowingYear);
 					  					this.props.changeProperty("notShowingYear", !notShowingYear);}} />
 					  	<label className="form-check-label" htmlFor="notShowingYear">Inclou l'any al text de la taula</label>
+					</div>
+				</div>
+								<div className="row my-2" title='Afegeix un espai en blanc al final del text de cada data de la taula. A vegades 
+								el text generat està creat amb la idea que hi hagi aquests espais.'>
+					<div className="form-check form-switch form-check-inline mb-3 mx-1">
+						<input className="form-check-input" type="checkbox" id="addEmptySpaceEndLine" checked={addEmptySpaceEndLine} 
+					  onChange={() => { savePropertyCookie("addEmptySpaceEndLine", !addEmptySpaceEndLine);
+					  					this.props.changeProperty("addEmptySpaceEndLine", !addEmptySpaceEndLine);}} />
+					  	<label className="form-check-label" htmlFor="addEmptySpaceEndLine">Afegeix un espai en blanc al final del text</label>
 					</div>
 				</div>
 			</div>

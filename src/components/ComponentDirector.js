@@ -9,7 +9,8 @@ import {loadPropertyCookie} from "./utils/CookieFunctions";
 
 
 /*Loading old values from cookies for calendar name and all checkboxes. These are the default values before cookies.*/
-let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: "true", iocStyleTable: "true", notShowingYear: "true"};
+let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: "true", iocStyleTable: "true", 
+						notShowingYear: "true", addEmptySpaceEndLine: "false"};
 /* TO-DO DEMÀ 24/12/21 
 Deixar-ho tot maco (muntar estils wapos pels components, cal muntar tooltips).*/ 
 
@@ -41,13 +42,15 @@ class ComponentDirector extends React.Component {
 			acceptWrongEndDate: strToBool(cookieProperties.acceptWrongEndDate),
 			iocStyleTable: strToBool(cookieProperties.iocStyleTable),
 			notShowingYear: strToBool(cookieProperties.notShowingYear),
+			addEmptySpaceEndLine: strToBool(cookieProperties.addEmptySpaceEndLine),
 			orderingByInitialDate: true,
 			orderingAsc: true,
 			customURL: "https://",
 			oldCustomURL: "https://",
 			storedCalendarData: undefined,
 			selectedEvents: [],
-			resultsChanged: true
+			resultsChanged: true,
+			mainMenuSelectedButton: ""
 		}
 
 		this.changeProperty = this.changeProperty.bind(this);
@@ -61,7 +64,7 @@ class ComponentDirector extends React.Component {
 		const eventArray = getFilteredEvents(this.state.storedCalendarData, options);
 		const selectedEvents = getSelectedEventsArray(eventArray, this.state.selectedEvents, this.state.orderingAsc, false);
 		const resultsExist = (this.state.storedCalendarData !== undefined);
-		let resultsButtonName = (resultsExist) ? "Taula generada ↴" : "Carrega un calendari per generar una taula";
+		let resultsButtonName = (resultsExist) ? "Taula generada ↴" : "Carrega un calendari per generar la taula";
 		return (
 			<div className="container" id="resultsDiv">
 		        <EventResultsUI filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
@@ -71,38 +74,82 @@ class ComponentDirector extends React.Component {
 		          changeProperty={this.changeProperty} eventsArray={eventArray} 
 		          selectedEvents={selectedEvents} resultsExist={resultsExist} colapseOpcButton={toggleColapsableCaretButton}
 		          canLoadNewCalendar={this.state.customURL !== this.state.oldCustomURL || (this.state.oldSelectedCalendar !== this.state.selectedCalendar)} />
-		          <div className="row justify-content-center mb-3">
-			          <div className="d-grid gap-2 col-6 mx-auto">
-							<button className={"btn btn-primary btn-lg"} type="button" disabled={!resultsExist} id="taulaButton"
-								onClick={() => { if (resultsExist && selectedEvents.length > 0) {
-									setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
-									}}}>
-								    {resultsButtonName}
-							  </button>
-					 </div>
-			         <div className="d-grid gap-2 col-6 mx-auto">
-				          <button className="btn btn-lg btn-dark btn-block lh-1" type="button" data-bs-toggle="collapse" data-bs-target="#colapsaOpcions" 
-							aria-expanded="false" aria-controls="colapsaOpcions" id="colapsaButton"
-							onClick={() => { toggleColapsableCaretButton("Opcions ", "colapsaButton", "colapsaOpcions", false);}}>
+		        <div className="row justify-content-center my-2">
+			         <div className="d-grid col-8 mx-0">
+				          <button className="btn btn-dark btn-lg lh-1" type="button" data-bs-toggle="collapse" data-bs-target="#colapsaOpcions" 
+							aria-expanded="false" aria-controls="colapsaOpcions" id="colapsaButtonOpt"
+							onClick={() => { toggleColapsableCaretButton("Opcions ", "colapsaButtonOpt", "colapsaOpcions", false);}}>
 							    Opcions ▾
 						   </button>
 						</div>
-				</div>
-				<div className="collapse mb-3" id="colapsaOpcions">
-					<div className="row border border-2 gx-5 bg-white">
-						<div className="col mt-2">
-							  	<FilteringOptions changeProperty={this.changeProperty} filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
-					          filteringByEndDate={this.state.filteringByEndDate} endDate={this.state.endDate}
-					          filteringByWords={this.state.filteringByWords} words={this.state.words} />
-						</div>
-						  	<div className="col mt-2">
-						  		<OrderingOptions changeProperty={this.changeProperty}  options={options}/>
-					        </div>
-					 </div>
-				</div>
-					<div className="mt-4">
-						    <TableResultsUI selectedEvents={selectedEvents} options={options} resultsExist={resultsExist} />
+						<div className="collapse my-3" id="colapsaOpcions">
+						<div className="row border border-2 gx-5 bg-white">
+							<div className="col mt-2">
+								  	<FilteringOptions changeProperty={this.changeProperty} filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
+						          filteringByEndDate={this.state.filteringByEndDate} endDate={this.state.endDate}
+						          filteringByWords={this.state.filteringByWords} words={this.state.words} />
+							</div>
+							  	<div className="col mt-2">
+							  		<OrderingOptions changeProperty={this.changeProperty}  options={options}/>
+						        </div>
+						 </div>
 					</div>
+				</div>
+		        	<div className="row justify-content-center my-2">
+						<div className="d-grid col-8 mx-0">
+			          		<button className="btn btn-success lh-1 btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#colapsaInstruccions" 
+						aria-expanded="false" aria-controls="colapsaInstruccions" id="colapsaButtonInst"
+						onClick={() => { toggleColapsableCaretButton("Instruccions ", "colapsaButtonInst", "colapsaInstruccions", false);}}>
+						    Instruccions ▾
+					   		</button>
+						</div>
+					<div className="collapse my-3" id="colapsaInstruccions">
+						<div className="row border border-2 gx-5 bg-white pt-3 px-2">
+							<p className="fs-5">Aquesta aplicació està pensada per llegir les dades d'un calendari de google i crear una taula amb alguns dels events que hi ha dins,
+							llistant-los amb el seu nom, data d'inici i data acabament. Els events són les dates dels lliuraments, de les proves...</p>
+							<p  className="fs-5">La idea original és crear ràpidament una taula ordenada dels lliuraments del curs. Per fer-ho, les opcions 
+							mostren per defecte els events entre una setmana abans i tres mesos després del dia d'avui.</p>
+							<ul>
+								<li className="fw-bold">Primer, cal seleccionar un calendari dels disponibles a la llista central i fer clic al botó 
+								"Carrega les dates del calendari". Amb això, es carregaran tots els events del calendari. </li>
+								<li className="fw-bold"> De la llista d'events a la part superior, els que estan en blau seràn els seleccionats per 
+								aparèixer a la taula final.</li>
+								<ul>
+									<li>A la llista d'events només apareixeran els events que compleixin els criteris dels filtres.
+								(Aquests criteris poden llegir-se sota l'apartat "Filtres actius")</li>
+									<li>Per defecte es seleccionen sis events dels disponibles quan es carrega un calendari. (pensant en 4 lliuraments, publicació i validació) </li>
+									<li>Es poden seleccionar/desseleccionar events clicant a sobre seu a la llista amb el ratolí, o amb els botons de seleccionar/desseleccionar tots.</li>
+								</ul>
+								<li className="fw-bold">Podeu modificar els events que apareixen a la llista per seleccionar canviant els filtres a Opcions. </li>
+									<ul>
+									<li>Es pot canviar la data mínima que ha de tenir un event per aparèixer a la llista, la màxima, o quines paraules ha de contenir. </li>
+									<li>Si desactiveu un filtre, prement sobre el botó d'ON/OFF al seu costat, deixarà de comprovar aquell criteri. Per exemple, 
+									si desactiveu el filtre de data	d'inici, apareixeran tots els events passats a la llista. </li>
+									<li>També es poden canviar maneres d'ordenar els events a la llista i altres opcions (deixeu el ratolí un moment sobre el 
+										text de les opcions per una	explicació més detallada).</li>
+									</ul>
+								<li className="fw-bold">Un cop carregades les dades i seleccionats els events que us interessen, tindreu la taula creada a la part inferior.</li>
+									<ul>
+									<li>També podeu anar a la taula prement sobre el botó "Taula" a la part superior, o sobre el botó "Taula generada".</li>
+									<li>Podeu copiar les dades de la taula amb el botó "Copia" o canviar-la, modificant-ne els paràmetres a opcions o els events seleccionats.</li>
+									</ul>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div className="row justify-content-center my-2">
+					<div className="d-grid col-8 mx-0">
+						<button className={"btn btn-primary btn-lg "} type="button" disabled={!resultsExist} id="taulaButton"
+							onClick={() => { if (resultsExist && selectedEvents.length > 0) {
+								setTimeout( () => {document.getElementById("taulaDiv").scrollIntoView();} , 200);
+								}}}>
+							    {resultsButtonName}
+						  </button>
+					 </div>	
+				</div>
+				<div className="mt-4">
+					    <TableResultsUI selectedEvents={selectedEvents} options={options} resultsExist={resultsExist} />
+				</div>
 		    	<div className="row mt-5 mb-2">
 		    		<p className="text-center"><small className="text-muted">Creat per Ramon Vicente en l'any 2020, primer any de la Pesta Corona. 
 					<a href="mailto:&#114;&#118;&#105;&#99;&#101;&#110;&#116;&#101;&#100;&#105;&#97;&#122;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;"
@@ -154,7 +201,8 @@ class ComponentDirector extends React.Component {
 						orderingByInitialDate: this.state.orderingByInitialDate,
 						acceptWrongEndDate: this.state.acceptWrongEndDate,
 						iocStyleTable: this.state.iocStyleTable,
-						notShowingYear: this.state.notShowingYear
+						notShowingYear: this.state.notShowingYear,
+						addEmptySpaceEndLine: this.state.addEmptySpaceEndLine
 					}
 		if (!this.state.filteringByWords) { delete options.searchWord; }
 		if (isNaN(options.initialDate) || !this.state.filteringByStartDate) { delete options.initialDate; }

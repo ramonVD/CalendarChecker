@@ -8,6 +8,7 @@ class EndResultTables extends React.PureComponent {
 	render() {	
 		let eventArray = this.props.selectedEvents.slice();
 		const iocStyleTable = this.props.options.iocStyleTable;
+		const addEmptySpaceEndLine = this.props.options.addEmptySpaceEndLine;
 		let orderingAsc = this.props.options.orderingAsc;
 		if (!this.props.resultsExist) { return <div className="mb-5" id="taulaDiv"></div>; }
 		if (this.props.selectedEvents === undefined || this.props.selectedEvents.length < 1) { return <div className="text-center fs-5 mb-5 mt-5" id="taulaDiv">Selecciona com a mínim un event del llistat per generar una taula</div>; }
@@ -24,12 +25,14 @@ class EndResultTables extends React.PureComponent {
 			event = eventArray[i];
 			currentDate = new Date(event.start);
 			formattedStartData = formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+			if (addEmptySpaceEndLine) formattedStartData += " ";
 
 			//A la taula estil ioc juntem publicació i validació. Només passa si són events consecutius
 			if (iocStyleTable && i < eventArray.length - 1 && eventArray[i].summary.search(/validació/g) >= 0 && eventArray[i+1].summary.search(/notes/g) >= 0) {
 				let nextEvent = eventArray[i+1];
 				currentDate = new Date(nextEvent.start);
 				correctedEndDate = isNaN(nextEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+				if (addEmptySpaceEndLine) correctedEndDate += " ";
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-publicació</td><td>{formattedStartData}</td>
 									<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Validació-publicació</td>"}<br />
@@ -40,6 +43,7 @@ class EndResultTables extends React.PureComponent {
 			} else {
 				currentDate = new Date(event.end);
 				correctedEndDate = isNaN(event.end) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+				if (addEmptySpaceEndLine) correctedEndDate += " ";
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>{event.summary}</td><td>{formattedStartData}</td>
 											<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>" + event.summary + "</td>"}<br />
@@ -69,7 +73,7 @@ class EndResultTables extends React.PureComponent {
 		  			<tbody>
 					<tr>
 					  <td>Mòdul:</td>
-					  <td>Nom del mòdul</td>
+					  <td>Introdueix aquí el nom del mòdul</td>
 					  <td></td>
 					</tr>
 					{normalTableRows}
@@ -87,7 +91,7 @@ class EndResultTables extends React.PureComponent {
 		  			<tbody><tr><td>Mòdul:</td>
 		  			<td><div id="textDiv0"></div>
 		  			<script>var div=document.getElementById('textDiv0');
-		  			div.textContent="Nom del mòdul";
+		  			div.textContent="Introdueix aquí el nom del mòdul";
 		  			var text0=div.textContent;</script>
 					  </td><td></td></tr>`}</span>
 				<span className="text-start tableCode">

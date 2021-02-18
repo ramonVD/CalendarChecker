@@ -9,13 +9,13 @@ class CopyTextButton extends React.PureComponent {
 		return (
 			<button className={classNames} onClick={() => {
 				let selectedContainer = document.getElementById(linkedId);
-				if (selectedContainer === undefined || selectedContainer === null) { console.log("error finding element");return; }
+				if (selectedContainer === undefined || selectedContainer === null) { console.log("No existeix el text a copiar.");return; }
 				var range = document.createRange();
                 range.selectNode(selectedContainer);
                 window.getSelection().removeAllRanges(); // clear current selection
                 window.getSelection().addRange(range); // to select text
                 document.execCommand("copy");
-                window.getSelection().removeAllRanges();// to deselect
+                window.getSelection().removeAllRanges();// to deselect text again
 				createCopyingAviso();
 			}}>
 				{btnText}

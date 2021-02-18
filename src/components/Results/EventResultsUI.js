@@ -88,7 +88,7 @@ class EventResultsUI extends React.Component {
 											if (!colapseDiv.classList.contains("show")) {
 												colapseDiv.classList.add("show"); 
 											}
-											setTimeout( () => {this.props.colapseOpcButton("Opcions ", "colapsaButton", "colapsaOpcions", true);} , 200);
+											setTimeout( () => {this.props.colapseOpcButton("Opcions ", "colapsaButtonOpt", "colapsaOpcions", true);} , 200);
 								}}>Canvia'ls</span>)</p>
 						{finalFilterText}
 						</div>
