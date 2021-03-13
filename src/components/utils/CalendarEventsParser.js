@@ -168,13 +168,13 @@ export function getSelectedEventsArray(eventArray, oldSelectedEvents, orderingAs
 
 export function formatDate(date, format) {
     const map = {
+    	dd: zerosToTheLeft(date.getDate(),2),
         mm: zerosToTheLeft(date.getMonth() + 1, 2),
-        dd: zerosToTheLeft(date.getDate(),2),
         yy: date.getFullYear().toString().slice(-2),
         yyyy: date.getFullYear()
     }
 
-    return format.replace(/mm|dd|yyyy|yy/gi, matched => map[matched])
+    return format.replace(/dd|mm|yyyy|yy/gi, matched => map[matched])
 }
 
 function zerosToTheLeft(originalStr, minLength) {
@@ -188,6 +188,7 @@ function zerosToTheLeft(originalStr, minLength) {
 export function formatDateCatalan(diaSetmana, dia, mes, any, noYear) {
 	const dies = ["diumenge", "dilluns","dimarts","dimecres","dijous","divendres","dissabte"];
 	const mesos = ["gener","febrer","març","abril","maig","juny","juliol","agost","septembre","octubre","novembre","desembre"];
-	if (noYear !== undefined && !noYear) { return (dies[diaSetmana] + " " + dia + " de " + mesos[mes] + " de " + any);}
-	return (dies[diaSetmana] + " " + dia + " de " + mesos[mes]);
+	const de = ["abril", "agost", "octubre"].includes(mesos[mes]) ? " d'" : " de ";
+	if (noYear !== undefined && !noYear) { return (dies[diaSetmana] + " " + dia + de + mesos[mes] + " de " + any);}
+	return (dies[diaSetmana] + " " + dia + de + mesos[mes]);
 }

@@ -134,8 +134,8 @@ function generateRowsFromEvents(eventsArray, selectedEvents, callback) {
 	let selectedElement, startDate, finalDate;
 	for (let element of eventsArray) {
 		selectedElement = foundElementUID(element.uid, selectedEvents) ? " selected" : "";
-		startDate = new Date(element.start).toLocaleDateString();
-		finalDate = new Date(element.end).toLocaleDateString();
+		startDate = new Date(element.start).toLocaleDateString("es-ES",  { year: 'numeric', month: '2-digit', day: '2-digit' });
+		finalDate = new Date(element.end).toLocaleDateString("es-ES",  { year: 'numeric', month: '2-digit', day: '2-digit' });
 		rows.push(<div className={"row insideResultsRow " + selectedElement} 
 				title="Prem amb el ratolí per seleccionar/deseleccionar l'event" key={element.uid} onClick={() => {callback(element);}}>
 				<div className="col text-center" key={"ct"+element.uid}>{element.summary}</div>
