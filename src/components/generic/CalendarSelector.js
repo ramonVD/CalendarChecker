@@ -2,10 +2,10 @@ import React from "react";
 import {savePropertyCookie} from "../utils/CookieFunctions";
 
 export const DEFAULT_CALENDARS_NAME = ["GES", "BATX", "Custom"];
-const DEFAULT_CALENDARS_TEXT = {GES: "Calendari del GES", BATX: "Calendari de BATX", Custom: "Altre (escriu direcció HTML de l'arxiu ical)" };
-export let CALENDARS_URL = { GES: "https://calendar.google.com/calendar/ical/k0aqkiq40e79pokavpkg9fqu60%40group.calendar.google.com/public/basic.ics",
-					 BATX: "https://calendar.google.com/calendar/ical/ioc.cat_7fqpufpt2a59n9usn3kkta6h5o%40group.calendar.google.com/public/basic.ics", 
-					 Custom: "https://"};
+const DEFAULT_CALENDARS_TEXT = {GES: "Calendari del GES", BATX: "Calendari de BATX", Custom: "Altre (escriu l'Identificador de calendari sense @group.calendar...)" };
+export let CALENDARS_URL = { GES: "k0aqkiq40e79pokavpkg9fqu60",
+					 BATX: "ioc.cat_7fqpufpt2a59n9usn3kkta6h5o", 
+					 Custom: "..."};
 
 export class CalendarSelector extends React.PureComponent {
 

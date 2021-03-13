@@ -1,5 +1,6 @@
 import {CALENDARS_URL} from "../generic/CalendarSelector";
 import React from "react";
+require('dotenv').config();
 
 class FetchCalendarDatesButton extends React.Component {
 	constructor(props) {
@@ -58,34 +59,32 @@ export default FetchCalendarDatesButton;
 
 
 
-function fetchDates(URL, callbackOK, callbackError) {
+function fetchDates(calendarID, callbackOK, callbackError) {
 	//Aconsegueix els valors de la URL en comptes d'usar testvalues...
-	const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+	const proxyUrl = process.env.REACT_APP_APIURL;
 
-	const usedURL = URL.replace(/\s+|&|<|>|"|'/g, '');
+	const usedID = calendarID.replace(/\s+|&|<|>|"|'/g, '');
 
-	if (usedURL.search(/^https:\/\/calendar\.google\.com\//) < 0) {
-		setTimeout( () => {callbackError(-2);}, 200);
-	} else {
-		//const timeBeforeCheck = Date.now();
-		fetch(proxyUrl + usedURL, {
-			mode: 'cors',
-			headers: {
-			'Content-Type': "text/plain"
-			}
-		    })
-	    .then((res) => {
-	    	if (res.status >= 300 ) {
-	    		throw Error("Calendar not found");
-	    	} else {
-	    		return res.text();
-	    	}})
-	    .then( (data) => {
-	    	callbackOK(data);
-	    }).catch((error) => {
-				callbackError(-1);
-				return;
-		});
-	}
+	//const timeBeforeCheck = Date.now();
+	fetch(proxyUrl + usedID, {
+		mode: 'cors',
+		headers: {
+		'Content-Type': "text/plain"
+		}
+	    })
+    .then((res) => {
+    	if (res.status >= 300 ) {
+    		throw Error("Calendar not found");
+    	} else {
+    		return res.text();
+    	}})
+    .then( (data) => {
+    	const finalData = JSON.parse(data);
+    	callbackOK(finalData.data);
+    }).catch((error) => {
+    	console.log(error)
+			callbackError(-1);
+			return;
+	});
 		  
 }
