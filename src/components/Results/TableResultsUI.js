@@ -36,8 +36,8 @@ class EndResultTables extends React.PureComponent {
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-publicació</td><td>{formattedStartData}</td>
 									<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Validació-publicació</td>"}<br />
-						{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + formattedStartData + "`;var text" + counter++ +"= div.textContent;</script>"}<br />
-						{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + correctedEndDate + "`;var text" + counter++ +"= div.textContent;</script></tr>"}
+						{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + formattedStartData + "\";var text" + counter++ +"= div.textContent;</script>"}<br />
+						{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + correctedEndDate + "\";var text" + counter++ +"= div.textContent;</script></tr>"}
 						</p>);
 				i++;
 			} else {
@@ -47,8 +47,8 @@ class EndResultTables extends React.PureComponent {
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>{event.summary}</td><td>{formattedStartData}</td>
 											<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>" + event.summary + "</td>"}<br />
-								{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + formattedStartData + "`;var text" + counter++ +"= div.textContent;</script>"}<br />
-								{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + correctedEndDate + "`;var text" + counter++ +"= div.textContent;</script></tr>"}
+								{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + formattedStartData + "\";var text" + counter++ +"= div.textContent;</script>"}<br />
+								{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + correctedEndDate + "\";var text" + counter++ +"= div.textContent;</script></tr>"}
 								</p>);
 			}
 		}
@@ -71,11 +71,11 @@ class EndResultTables extends React.PureComponent {
 				<table className="table table-condensed table-hover table-bordered" >
 		  			<caption>Calendari del trimestre</caption>
 		  			<tbody>
-					<tr>
-					  <td>Mòdul:</td>
-					  <td>Introdueix aquí el nom del mòdul</td>
-					  <td></td>
-					</tr>
+						<tr>
+						  <th>Mòdul:</th>
+						  <th>Introdueix aquí el nom del mòdul</th>
+						  <th></th>
+						</tr>
 					{normalTableRows}
 					</tbody>
 				</table>
@@ -88,12 +88,12 @@ class EndResultTables extends React.PureComponent {
 				<span className="text-start tableCode">{`
 				<table class="table table-condensed table-hover table-bordered" style="min-width:300px;">
 					<caption>Calendari del trimestre</caption>
-		  			<tbody><tr><td>Mòdul:</td>
-		  			<td><div id="textDiv0"></div>
+		  			<tbody><tr><th>Mòdul:</th>
+		  			<th><div id="textDiv0"></div>
 		  			<script>var div=document.getElementById('textDiv0');
 		  			div.textContent="Introdueix aquí el nom del mòdul";
 		  			var text0=div.textContent;</script>
-					  </td><td></td></tr>`}</span>
+					  </th><th></th></tr>`}</span>
 				<span className="text-start tableCode">
 					{codeTableRows}
 				</span>
