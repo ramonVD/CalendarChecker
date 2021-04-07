@@ -36,8 +36,8 @@ class EndResultTables extends React.PureComponent {
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-publicació</td><td>{formattedStartData}</td>
 									<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Validació-publicació</td>"}<br />
-						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + formattedStartData + "';var text" + counter++ +"= div.textContent;</script>"}<br />
-						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + correctedEndDate + "';var text" + counter++ +"= div.textContent;</script></tr>"}
+						{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + formattedStartData + "`;var text" + counter++ +"= div.textContent;</script>"}<br />
+						{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + correctedEndDate + "`;var text" + counter++ +"= div.textContent;</script></tr>"}
 						</p>);
 				i++;
 			} else {
@@ -47,8 +47,8 @@ class EndResultTables extends React.PureComponent {
 				normalTableRows.push(<tr key={"normalTable"+counter}><td>{event.summary}</td><td>{formattedStartData}</td>
 											<td>{correctedEndDate}</td></tr>);
 				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>" + event.summary + "</td>"}<br />
-								{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + formattedStartData + "';var text" + counter++ +"= div.textContent;</script>"}<br />
-								{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + correctedEndDate + "';var text" + counter++ +"= div.textContent;</script></tr>"}
+								{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + formattedStartData + "`;var text" + counter++ +"= div.textContent;</script>"}<br />
+								{"<td><div id='textDiv" + counter + "'></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=`" + correctedEndDate + "`;var text" + counter++ +"= div.textContent;</script></tr>"}
 								</p>);
 			}
 		}
