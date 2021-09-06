@@ -2,6 +2,7 @@ import {CALENDARS_URL} from "../generic/CalendarSelector";
 import React from "react";
 require('dotenv').config();
 
+/*Button that fetches data from an external api when clicked*/
 class FetchCalendarDatesButton extends React.Component {
 	constructor(props) {
 		super(props);
@@ -58,7 +59,7 @@ export default FetchCalendarDatesButton;
 
 
 
-
+/*Function to fetch the calendar data from the API*/
 function fetchDates(calendarID, callbackOK, callbackError) {
 	//Aconsegueix els valors de la URL en comptes d'usar testvalues...
 	const proxyUrl = process.env.REACT_APP_APIURL;

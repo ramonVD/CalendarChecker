@@ -1,6 +1,8 @@
 import React from "react";
 import YesNoUseLinkedElement from "../generic/YesNoUseLinkedElement";
 
+/*Element that lets you pick a list of words and be active or not (via the YesNo... element).
+The words will be passed to state and used to filter events if its active*/
 class WordSelector extends React.PureComponent {
 
 	render() {

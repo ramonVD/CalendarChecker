@@ -1,7 +1,7 @@
 import cookie from 'react-cookies';
 
 const cookiesPath = "/";
-
+/*Simple cookies load/save functions using the react-cookies library*/
 export function loadPropertyCookie(propertyName) {
 	return cookie.load(propertyName);
 }

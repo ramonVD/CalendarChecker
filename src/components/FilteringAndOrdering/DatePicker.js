@@ -1,6 +1,8 @@
 import React from "react";
 import YesNoUseLinkedElement from "../generic/YesNoUseLinkedElement";
 
+/*Element that lets you pick a date and be active or not (via the YesNo... element).
+Date will be passed to state and used to filter events if its active*/
 class DatePicker extends React.PureComponent{
 
 	render() {

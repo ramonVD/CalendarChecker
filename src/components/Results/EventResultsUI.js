@@ -5,9 +5,7 @@ import FetchCalendarDatesButton from "./FetchCalendarDatesButton";
 import "../../styles/EventResultsUI.css";
 
 
-/*Dema - que al titol llistat d'events ->posi calendari no carregat... i tal i que generant taula sigui un boto amb link...
-POTSER QUE SIGUIN 2 LINIES*/
-
+/*Sets up the results UI, basically the top list of elements and the options under it.*/
 class EventResultsUI extends React.Component {
 	constructor(props) {
 		super(props);

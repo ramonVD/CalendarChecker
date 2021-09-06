@@ -64,6 +64,10 @@
 	overflow-y: auto;
 }
 
+.radioRow{
+	margin:15px 0 15px -26px;
+}
+
 @media (min-height: 700px) {
 	.results {
 		height: 400px;

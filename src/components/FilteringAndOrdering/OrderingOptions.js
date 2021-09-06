@@ -1,14 +1,15 @@
 import React from "react";
 import {savePropertyCookie} from "../utils/CookieFunctions";
 
-//should create a purecomponent for radios and checkboxes, or just a function to create em...
+/*Generates the options for ordering and some simple filtering of events, basically the "right side"
+of the options menu*/
 
 class OrderingOptions extends React.PureComponent {
 
 	render() {
 		const orderingByInitialDate = this.props.options.orderingByInitialDate;
 		const orderingAsc = this.props.options.orderingAsc;
-		const iocStyleTable = this.props.options.iocStyleTable;
+		const provaValidacio = this.props.options.provaValidacio;
 		const acceptWrongEndDate = this.props.options.acceptWrongEndDate;
 		const notShowingYear = this.props.options.notShowingYear;
 		const addEmptySpaceEndLine = this.props.options.addEmptySpaceEndLine;
@@ -51,20 +52,34 @@ class OrderingOptions extends React.PureComponent {
 						</div>
 					</div>
 				</div>
+				<div className="form-check radioRow" title="Mostra la prova de validació a la taula">
+					<label className="form-check-label" htmlFor="provaValidacio">Mostra prova validació&nbsp;&nbsp;&nbsp;</label>
+					<div className="form-check form-check-inline">
+					  <input className="form-check-input" type="radio" id="provaValidacioC" checked={provaValidacio === "0"}
+					  onChange={ () => {savePropertyCookie("provaValidacio", "0");
+					  					this.props.changeProperty("provaValidacio", "0");}}
+					  				 />
+					  <label className="form-check-label" htmlFor="inlineCheckbox1">Cap</label>
+					</div>
+					<div className="form-check form-check-inline">
+					  <input className="form-check-input" type="radio" id="provaValidacioT" checked={provaValidacio === "1"}
+					  onChange={ () => {savePropertyCookie("provaValidacio", "1");
+					  					this.props.changeProperty("provaValidacio", "1");}} />
+					  <label className="form-check-label" htmlFor="inlineCheckbox2">Telemàtica</label>
+					</div>
+					<div className="form-check form-check-inline">
+					  <input className="form-check-input" type="radio" id="provaValidacioP"  checked={provaValidacio === "2"}
+						onChange={ () => {savePropertyCookie("provaValidacio", "2");
+					  					this.props.changeProperty("provaValidacio", "2");}} />
+					  <label className="form-check-label" htmlFor="inlineCheckbox3">Presencial</label>
+					</div>
+				</div>
 				<div className="row my-2" title="Hi ha events que no tenen data final, no per ser erronis sinó per com s'han creat.">
 					<div className="form-check form-switch form-check-inline mx-1">
 				 		<input className="form-check-input" type="checkbox" id="acceptWrongEndDate" checked={acceptWrongEndDate} 
 					  onChange={() => {	savePropertyCookie("acceptWrongEndDate", !acceptWrongEndDate);
 					  					this.props.changeProperty("acceptWrongEndDate", !acceptWrongEndDate);}} />
 					  	<label className="form-check-label" htmlFor="acceptWrongEndDate">Inclou events amb dates finals no definides</label>
-					</div>
-				</div>
-				<div className="row" title="S'ajunten validació i publicació en una sola fila, si apareixen com events consecutius. Sempre posa les dates de manera ascendent i no apareix l'any.">
-					<div className="form-check form-switch form-check-inline mx-1">
-						<input className="form-check-input" type="checkbox" id="iocStyleTable" checked={iocStyleTable} 
-					  onChange={() => { savePropertyCookie("iocStyleTable", !iocStyleTable);
-					  					this.props.changeProperty("iocStyleTable", !iocStyleTable);}} />
-					  	<label className="form-check-label" htmlFor="iocStyleTable">Genera taula a l'estil GAM del GES</label>
 					</div>
 				</div>
 				<div className="row my-2" title="Per defecte al GES no es posa l'any.">

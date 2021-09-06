@@ -3,10 +3,12 @@ import {savePropertyCookie} from "../utils/CookieFunctions";
 
 export const DEFAULT_CALENDARS_NAME = ["GES", "BATX", "Custom"];
 const DEFAULT_CALENDARS_TEXT = {GES: "Calendari del GES", BATX: "Calendari de BATX", Custom: "Altre (escriu l'Identificador de calendari sense @group.calendar...)" };
-export let CALENDARS_URL = { GES: "k0aqkiq40e79pokavpkg9fqu60",
+export let CALENDARS_URL = { GES: "a99rfo1vdupcbkhpmjgmt4amsc",
 					 BATX: "ioc.cat_7fqpufpt2a59n9usn3kkta6h5o", 
 					 Custom: "..."};
 
+/*UI Element that lets you select a predefined google calendar to load from a list. It also
+lets you add a custom google calendar via its id.*/
 export class CalendarSelector extends React.PureComponent {
 
 	render() {

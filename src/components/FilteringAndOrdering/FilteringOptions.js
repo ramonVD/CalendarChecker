@@ -2,6 +2,9 @@ import React from "react";
 import DatePicker from "./DatePicker";
 import WordSelector from "./WordSelector";
 
+/*Generates the filter UI, sets up the filter by starting/ending date option and 
+the select concrete words to look out for option. Basically the "left side" of the
+option menu*/
 class FilteringOptions extends React.PureComponent {
 
 	render() {

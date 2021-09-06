@@ -1,11 +1,11 @@
+import {getDefaultEventAmount} from "../ComponentDirector";
 const ical = require('ical');
 
-const DEFAULT_AMOUNT_OF_SELECTED_EVENTS = 6;
-
+/*Parses all events in a calendar and returns them as a dictionary with the useful data as parameters*/
 //Case don't matter
 export function getFilteredEvents(data, options) {
 	if (options === undefined) { 
-		options = {searchWord: /(lliurament|lliurment|publicació|notes)/gi } 
+		options = {searchWord: /(lliurament|lliurment|proves|avaluació|avaluacio)/gi } 
 	}
 	if (data === undefined) { return []; }
 	const calendarData = ical.parseICS(data);
@@ -135,6 +135,7 @@ export function getSelectedEventsArray(eventArray, oldSelectedEvents, orderingAs
 	let selectedEvents = oldSelectedEvents.slice();
 
 	let counter = 0, startingPoint = 0;
+	const DEFAULT_AMOUNT_OF_SELECTED_EVENTS = getDefaultEventAmount();
 	//By default, when a calendar is loaded we select 6 events (where depends on ordenation)
 	if (selectedEvents.length < DEFAULT_AMOUNT_OF_SELECTED_EVENTS && forceSelect) {
 		counter = DEFAULT_AMOUNT_OF_SELECTED_EVENTS;

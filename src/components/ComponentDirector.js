@@ -9,10 +9,18 @@ import {loadPropertyCookie} from "./utils/CookieFunctions";
 
 
 /*Loading old values from cookies for calendar name and all checkboxes. These are the default values before cookies.*/
-let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: "true", iocStyleTable: "true", 
+let cookieProperties = {selectedCalendar: DEFAULT_CALENDARS_NAME[0], acceptWrongEndDate: "true", provaValidacio: "2", 
 						notShowingYear: "true", addEmptySpaceEndLine: "false"};
-/* TO-DO DEMÀ 24/12/21 
-Deixar-ho tot maco (muntar estils wapos pels components, cal muntar tooltips).*/ 
+
+//Amount of auto selected events when loading a calendar (last 7, or all if there arent enough)
+const DEFAULT_AMOUNT_OF_SELECTED_EVENTS = 7;
+
+export function getDefaultEventAmount() {
+	return DEFAULT_AMOUNT_OF_SELECTED_EVENTS;
+}
+
+
+/*Sets up the UI elements, passing cookie values if there are any. Keeps track of app state*/ 
 
 class ComponentDirector extends React.Component {
 	constructor(props) {
@@ -22,7 +30,7 @@ class ComponentDirector extends React.Component {
 		const DEFAULT_DAYS_AFTER = 100;
 		const defaultStartDate = formatDate(new Date(Date.now() - DEFAULT_DAYS_BEFORE * 24 * 60 * 60 * 1000), "yyyy-mm-dd");
 		const defaultEndDate = formatDate(new Date(Date.now() + (DEFAULT_DAYS_AFTER * 24 * 60 * 60 * 1000)), "yyyy-mm-dd");
-		const defaultWords = "lliurament, lliurment, validació, notes";
+		const defaultWords = "lliurament, lliurment, proves, avaluació, avaluacio";
 
 		let cookieSelectedProperty;
 		for (let property in cookieProperties) {
@@ -40,7 +48,7 @@ class ComponentDirector extends React.Component {
 			filteringByWords: true,
 			words: defaultWords,
 			acceptWrongEndDate: strToBool(cookieProperties.acceptWrongEndDate),
-			iocStyleTable: strToBool(cookieProperties.iocStyleTable),
+			provaValidacio: cookieProperties.provaValidacio,
 			notShowingYear: strToBool(cookieProperties.notShowingYear),
 			addEmptySpaceEndLine: strToBool(cookieProperties.addEmptySpaceEndLine),
 			orderingByInitialDate: true,
@@ -200,8 +208,8 @@ class ComponentDirector extends React.Component {
 						orderingAsc: this.state.orderingAsc,
 						orderingByInitialDate: this.state.orderingByInitialDate,
 						acceptWrongEndDate: this.state.acceptWrongEndDate,
-						iocStyleTable: this.state.iocStyleTable,
 						notShowingYear: this.state.notShowingYear,
+						provaValidacio: this.state.provaValidacio,
 						addEmptySpaceEndLine: this.state.addEmptySpaceEndLine
 					}
 		if (!this.state.filteringByWords) { delete options.searchWord; }

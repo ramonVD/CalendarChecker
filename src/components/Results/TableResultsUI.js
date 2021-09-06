@@ -3,11 +3,12 @@ import {formatDateCatalan, reverseArray} from "../utils/CalendarEventsParser";
 import CopyTextButton from "./CopyTextButton";
 import "../../styles/TableResultsUI.css";
 
+/*Generates the two html tables using calendar event data*/
 class EndResultTables extends React.PureComponent {
 
 	render() {	
 		let eventArray = this.props.selectedEvents.slice();
-		const iocStyleTable = this.props.options.iocStyleTable;
+		const provaValidacio = this.props.options.provaValidacio;
 		const addEmptySpaceEndLine = this.props.options.addEmptySpaceEndLine;
 		let orderingAsc = this.props.options.orderingAsc;
 		if (!this.props.resultsExist) { return <div className="mb-5" id="taulaDiv"></div>; }
@@ -19,38 +20,37 @@ class EndResultTables extends React.PureComponent {
 		const notShowingYear = (this.props.options.notShowingYear === undefined) ? "true" : this.props.options.notShowingYear;
 		//Ordenada sempre la llista d'events
 		eventArray = orderArrayDescDates(eventArray);
-		if (!iocStyleTable && !orderingAsc) { eventArray = reverseArray(eventArray); }
+		if (!orderingAsc) { eventArray = reverseArray(eventArray); }
 
 		for (let i = 0; i < eventArray.length; i++){
 			event = eventArray[i];
+
+			/*Don't show some elements according to the criteria, probably make this a more generalist function in the future,
+			or maybe filter these out when the events read, in CalendarEventsParser*/
+			if (event.summary.search(/proves|presencials|telemàtiques|telematiques/gi) >= 0) {
+				if (provaValidacio === "0") {
+					continue;
+				} else if (event.summary.search(/telematiques|telemàtiques/) >= 0 && provaValidacio === "2") {
+					continue;
+				} else if (event.summary.search(/presencials/) >= 0 && provaValidacio === "1") {
+					continue;
+				}
+			}
+
 			currentDate = new Date(event.start);
 			formattedStartData = formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
 			if (addEmptySpaceEndLine) formattedStartData += " ";
 
-			//A la taula estil ioc juntem publicació i validació. Només passa si són events consecutius
-			if (iocStyleTable && i < eventArray.length - 1 && eventArray[i].summary.search(/validació/g) >= 0 && eventArray[i+1].summary.search(/notes/g) >= 0) {
-				let nextEvent = eventArray[i+1];
-				currentDate = new Date(nextEvent.start);
-				correctedEndDate = isNaN(nextEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
-				if (addEmptySpaceEndLine) correctedEndDate += " ";
-				normalTableRows.push(<tr key={"normalTable"+counter}><td>Validació-publicació</td><td>{formattedStartData}</td>
-									<td>{correctedEndDate}</td></tr>);
-				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Validació-publicació</td>"}<br />
-						{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + formattedStartData + "\";var text" + counter++ +"= div.textContent;</script>"}<br />
-						{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + correctedEndDate + "\";var text" + counter++ +"= div.textContent;</script></tr>"}
-						</p>);
-				i++;
-			} else {
-				currentDate = new Date(event.end);
-				correctedEndDate = isNaN(event.end) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
-				if (addEmptySpaceEndLine) correctedEndDate += " ";
-				normalTableRows.push(<tr key={"normalTable"+counter}><td>{event.summary}</td><td>{formattedStartData}</td>
-											<td>{correctedEndDate}</td></tr>);
-				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>" + event.summary + "</td>"}<br />
-								{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + formattedStartData + "\";var text" + counter++ +"= div.textContent;</script>"}<br />
-								{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + correctedEndDate + "\";var text" + counter++ +"= div.textContent;</script></tr>"}
-								</p>);
-			}
+			const modifiedEvent = filter_output_values(event);
+			currentDate = new Date(modifiedEvent.end);
+			correctedEndDate = isNaN(modifiedEvent.end) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+			if (addEmptySpaceEndLine) correctedEndDate += " ";
+			normalTableRows.push(<tr key={"normalTable"+counter}><td>{modifiedEvent.summary}</td><td>{formattedStartData}</td>
+										<td>{correctedEndDate}</td></tr>);
+			codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>" + modifiedEvent.summary + "</td>"}<br />
+							{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + formattedStartData + "\";var text" + counter++ +"= div.textContent;</script>"}<br />
+							{"<td><div id=\"textDiv" + counter + "\"></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent=\"" + correctedEndDate + "\";var text" + counter++ +"= div.textContent;</script></tr>"}
+							</p>);
 		}
 		let tableTitle = "Codi de la taula (estil Miqui)";
 		return (
@@ -107,6 +107,34 @@ class EndResultTables extends React.PureComponent {
 }
 
 
+/*Main function to adapt the values of any event that you can identify.
+Change what the end user sees if you get a concrete event in mind (identify it via
+its name and change what its name will be in the output, for example, or remove 
+its final date...*/
+function filter_output_values(event) {
+	let modifiedEvent = {};
+	for (let key in event) {
+		modifiedEvent[key] = event[key];
+	}
+
+	//Rules here
+	if (event.summary.search(/(avaluació|avaluacio)/gi) >= 0) {
+		modifiedEvent.summary = "Publicació notes";
+	}
+	if (event.summary.search(/proves/gi) >= 0) {
+		modifiedEvent.summary = modifiedEvent.summary.replace("Proves", "Prova");
+		modifiedEvent.summary = modifiedEvent.summary.replace("telemàtiques", "telemàtica");
+		modifiedEvent.summary = modifiedEvent.summary.replace("presencials", "presencial");
+	}
+	if (event.summary.search(/(prova|proves|avaluació|avaluacio)/gi) >= 0) {
+		modifiedEvent.end = NaN;
+	}
+	return modifiedEvent;
+}
+
+export default EndResultTables;
+
+
 function orderArrayDescDates(eventArray) {
 	let tmpArray = eventArray.slice();
 	let i = 0;
@@ -124,4 +152,3 @@ function orderArrayDescDates(eventArray) {
 	return tmpArray;
 }
 
-export default EndResultTables;

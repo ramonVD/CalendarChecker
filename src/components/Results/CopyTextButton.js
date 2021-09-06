@@ -1,6 +1,7 @@
 import React from "react";
 
 
+/*Button that lets you copy some linked (via id) text to the clipboard*/
 class CopyTextButton extends React.PureComponent {
 	render(){
 		const linkedId = this.props.linkedId;
@@ -26,7 +27,8 @@ class CopyTextButton extends React.PureComponent {
 }
 
 
-/*NOT REALLY STATEFUL.... but effort*/
+/*Creates an element with an animation that shows that the copying action has been performed.
+NOT REALLY STATEFUL.... but effort*/
 function createCopyingAviso() {
 	let oldAviso = document.getElementById("copiedButton");
     if (oldAviso === undefined || oldAviso === null ) { 
