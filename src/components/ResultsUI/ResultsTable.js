@@ -4,11 +4,11 @@ import CopyTextButton from "./CopyTextButton";
 import "../../styles/TableResultsUI.css";
 
 /*Generates the two html tables using calendar event data*/
-class EndResultTables extends React.PureComponent {
+class ResultsTable extends React.PureComponent {
 
 	render() {	
 		let eventArray = this.props.selectedEvents.slice();
-		const provaValidacio = this.props.options.provaValidacio; //Do we show test dates?
+		const provaValidacio = this.props.options.provaValidacio;
 		const addEmptySpaceEndLine = this.props.options.addEmptySpaceEndLine;
 		let orderingAsc = this.props.options.orderingAsc;
 		if (!this.props.resultsExist) { return <div className="mb-5" id="taulaDiv"></div>; }
@@ -27,9 +27,9 @@ class EndResultTables extends React.PureComponent {
 		for (let i = 0; i < eventArray.length; i++){
 			event = eventArray[i];
 
-			//These two are filtering options that suit my needs, probably make this modular in the future so it loads custom filtering options
+			//These two are filtering options that suit my needs, probably make this modular in the future so it can load custom filtering options
 
-			/*Join the grade publication and test date events in the same row if they are consecutive, remove previous only test date event*/
+			/*Join the grade publication and test date events in the same row if they are consecutive, remove previous row, the "only the test date event" row*/
 			if (event.summary.search(/(avaluacio|avaluació)/gi) >= 0 && lastTestEvent !== undefined) {
 				currentDate = new Date(event.start);
 				correctedEndDate = isNaN(lastTestEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
@@ -47,7 +47,7 @@ class EndResultTables extends React.PureComponent {
 			}
 
 			/*Don't show some elements according to the criteria, probably make this a more generalist function in the future,
-			or maybe filter these out when the events read, in CalendarEventsParser.*/
+			or maybe filter these out when the events are read, in CalendarEventsParser.*/
 			if (event.summary.search(/proves|presencials|telemàtiques|telematiques/gi) >= 0) {
 				if (provaValidacio === "0") {
 					lastTestEvent = undefined; //not necessary, just for clarity. Dont show test dates in this mode
@@ -166,9 +166,6 @@ function filter_output_values(event, options) {
 	return modifiedEvent;
 }
 
-export default EndResultTables;
-
-
 function orderArrayDescDates(eventArray) {
 	let tmpArray = eventArray.slice();
 	let i = 0;
@@ -186,3 +183,4 @@ function orderArrayDescDates(eventArray) {
 	return tmpArray;
 }
 
+export default ResultsTable;

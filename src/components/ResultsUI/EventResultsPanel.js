@@ -1,12 +1,12 @@
 import React from "react";
 import {formatDate} from "../utils/CalendarEventsParser";
-import {CalendarSelector} from "../generic/CalendarSelector";
+import {CalendarSelector} from "../genericElements/CalendarSelector";
 import FetchCalendarDatesButton from "./FetchCalendarDatesButton";
 import "../../styles/EventResultsUI.css";
 
 
-/*Sets up the results UI, basically the top list of elements and the options under it.*/
-class EventResultsUI extends React.Component {
+/*Sets up the results UI, basically the top list of events and the load calendar, etc. options under it.*/
+class EventResultsPanel extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggleSelectedElement = this.toggleSelectedElement.bind(this);
@@ -144,4 +144,4 @@ function generateRowsFromEvents(eventsArray, selectedEvents, callback) {
 	return rows;
 }
 
-export default EventResultsUI;
+export default EventResultsPanel;

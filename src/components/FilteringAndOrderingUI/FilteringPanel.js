@@ -2,10 +2,10 @@ import React from "react";
 import DatePicker from "./DatePicker";
 import WordSelector from "./WordSelector";
 
-/*Generates the filter UI, sets up the filter by starting/ending date option and 
-the select concrete words to look out for option. Basically the "left side" of the
-option menu*/
-class FilteringOptions extends React.PureComponent {
+/*Generates the filter UI, sets up the "filter by starting/ending date" options and 
+the "filter if you find these words" option. Basically the "left side" of the
+options menu*/
+class FilteringPanel extends React.PureComponent {
 
 	render() {
 
@@ -21,7 +21,7 @@ class FilteringOptions extends React.PureComponent {
 				<div className="row">
 					<div className="col">
 						<DatePicker label="Data acabament màx:" active={this.props.filteringByEndDate} date={this.props.endDate} key="endDate"
-						callback={this.props.changeProperty} changingProperty={"endDate"} />
+						callback={this.props.changeProperty} callbackProperty={"endDate"} />
 
 					</div>
 				</div>
@@ -37,4 +37,4 @@ class FilteringOptions extends React.PureComponent {
 
 }
 
-export default FilteringOptions;
+export default FilteringPanel;

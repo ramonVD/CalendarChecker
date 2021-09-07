@@ -1,8 +1,8 @@
 import React from "react";
 import "../../styles/YesNoUseLinkedElement.css";
 
-/*Boolean UI Element with to states, ON(green) or OFF(RED). Used to show
-that another component is active or not*/
+/*Boolean UI Element with two states, ON(green) or OFF(RED). Used to show
+that another component is active or not.*/
 class YesNoUseLinkedElement extends React.PureComponent {
 
 	render() {
