@@ -1,9 +1,9 @@
 import React from "react";
-import EventResultsUI from "./Results/EventResultsUI";
-import TableResultsUI from "./Results/TableResultsUI";
-import FilteringOptions from "./FilteringAndOrdering/FilteringOptions";
-import OrderingOptions from "./FilteringAndOrdering/OrderingOptions";
-import {DEFAULT_CALENDARS_NAME} from "./generic/CalendarSelector";
+import EventResultsPanel from "./ResultsUI/EventResultsPanel";
+import ResultsTable from "./ResultsUI/ResultsTable";
+import FilteringPanel from "./FilteringAndOrderingUI/FilteringPanel";
+import OrderingPanel from "./FilteringAndOrderingUI/OrderingPanel";
+import {DEFAULT_CALENDARS_NAME} from "./genericElements/CalendarSelector";
 import {getFilteredEvents, formatDate, getSelectedEventsArray} from "./utils/CalendarEventsParser";
 import {loadPropertyCookie} from "./utils/CookieFunctions";
 
@@ -75,7 +75,7 @@ class ComponentDirector extends React.Component {
 		let resultsButtonName = (resultsExist) ? "Taula generada ↴" : "Carrega un calendari per generar la taula";
 		return (
 			<div className="container" id="resultsDiv">
-		        <EventResultsUI filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
+		        <EventResultsPanel filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
 		          filteringByEndDate={this.state.filteringByEndDate} endDate={this.state.endDate}
 		          filteringByWords={this.state.filteringByWords} words={this.state.words}
 		          customURL={this.state.customURL} selectedCalendar={this.state.selectedCalendar} updateStoredData={this.updateStoredData}
@@ -93,12 +93,12 @@ class ComponentDirector extends React.Component {
 						<div className="collapse my-3" id="colapsaOpcions">
 						<div className="row border border-2 gx-5 bg-white">
 							<div className="col mt-2">
-								  	<FilteringOptions changeProperty={this.changeProperty} filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
+								  	<FilteringPanel changeProperty={this.changeProperty} filteringByStartDate={this.state.filteringByStartDate} startDate={this.state.startDate} 
 						          filteringByEndDate={this.state.filteringByEndDate} endDate={this.state.endDate}
 						          filteringByWords={this.state.filteringByWords} words={this.state.words} />
 							</div>
 							  	<div className="col mt-2">
-							  		<OrderingOptions changeProperty={this.changeProperty}  options={options}/>
+							  		<OrderingPanel changeProperty={this.changeProperty}  options={options}/>
 						        </div>
 						 </div>
 					</div>
@@ -156,7 +156,7 @@ class ComponentDirector extends React.Component {
 					 </div>	
 				</div>
 				<div className="mt-4">
-					    <TableResultsUI selectedEvents={selectedEvents} options={options} resultsExist={resultsExist} />
+					    <ResultsTable selectedEvents={selectedEvents} options={options} resultsExist={resultsExist} />
 				</div>
 		    	<div className="row mt-5 mb-2">
 		    		<p className="text-center"><small className="text-muted">Creat per Ramon Vicente en l'any 2020, primer any de la Pesta Corona. 

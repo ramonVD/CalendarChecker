@@ -4,7 +4,7 @@ import CopyTextButton from "./CopyTextButton";
 import "../../styles/TableResultsUI.css";
 
 /*Generates the two html tables using calendar event data*/
-class EndResultTables extends React.PureComponent {
+class ResultsTable extends React.PureComponent {
 
 	render() {	
 		let eventArray = this.props.selectedEvents.slice();
@@ -17,6 +17,8 @@ class EndResultTables extends React.PureComponent {
 		let counter = 1;
 		let normalTableRows = [];
 		let codeTableRows = [];
+		let lastTestEvent = undefined;
+		const options = {provaValidacio: provaValidacio}
 		const notShowingYear = (this.props.options.notShowingYear === undefined) ? "true" : this.props.options.notShowingYear;
 		//Ordenada sempre la llista d'events
 		eventArray = orderArrayDescDates(eventArray);
@@ -25,23 +27,51 @@ class EndResultTables extends React.PureComponent {
 		for (let i = 0; i < eventArray.length; i++){
 			event = eventArray[i];
 
-			/*Don't show some elements according to the criteria, probably make this a more generalist function in the future,
-			or maybe filter these out when the events read, in CalendarEventsParser*/
-			if (event.summary.search(/proves|presencials|telemàtiques|telematiques/gi) >= 0) {
-				if (provaValidacio === "0") {
-					continue;
-				} else if (event.summary.search(/telematiques|telemàtiques/) >= 0 && provaValidacio === "2") {
-					continue;
-				} else if (event.summary.search(/presencials/) >= 0 && provaValidacio === "1") {
-					continue;
-				}
+			//These two are filtering options that suit my needs, probably make this modular in the future so it can load custom filtering options
+
+			/*Join the grade publication and test date events in the same row if they are consecutive, remove previous row, the "only the test date event" row*/
+			if (event.summary.search(/(avaluacio|avaluació)/gi) >= 0 && lastTestEvent !== undefined) {
+				currentDate = new Date(event.start);
+				correctedEndDate = isNaN(lastTestEvent.start) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+				if (addEmptySpaceEndLine) correctedEndDate += " ";
+				counter-=2;
+				normalTableRows.pop(); //Remove the previous test date row in the table
+				normalTableRows.push(<tr key={"normalTable"+counter}><td>Prova validació - Publicació notes</td><td>{formattedStartData}</td>
+									<td>{correctedEndDate}</td></tr>);
+				codeTableRows.pop();
+				codeTableRows.push(<p key={"codeTable"+counter}>{"<tr><td>Prova validació - Publicació notes</td>"}<br />
+						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + formattedStartData + "';var text" + counter++ +"= div.textContent;</script>"}<br />
+						{"<td><div id=textDiv" + counter + "></div></td><script>var div=document.getElementById('textDiv"+counter + "');div.textContent='" + correctedEndDate + "';var text" + counter++ +"= div.textContent;</script></tr>"}
+						</p>);
+				continue;
 			}
 
-			currentDate = new Date(event.start);
-			formattedStartData = formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
+			/*Don't show some elements according to the criteria, probably make this a more generalist function in the future,
+			or maybe filter these out when the events are read, in CalendarEventsParser.*/
+			if (event.summary.search(/proves|presencials|telemàtiques|telematiques/gi) >= 0) {
+				if (provaValidacio === "0") {
+					lastTestEvent = undefined; //not necessary, just for clarity. Dont show test dates in this mode
+					continue;
+				} else if (event.summary.search(/telematiques|telemàtiques/) >= 0) {
+					if (provaValidacio === "2") {continue;}
+					else { lastTestEvent = event; }
+				} else if (event.summary.search(/presencials/) >= 0) {
+					if (provaValidacio === "1") {continue;}
+					else { lastTestEvent = event; }
+				}
+			} else {
+				lastTestEvent = undefined;
+			}
+
+
+
+			const modifiedEvent = filter_output_values(event, options);
+
+
+			currentDate = new Date(modifiedEvent.start);
+			formattedStartData = (isNaN(currentDate.getTime())) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
 			if (addEmptySpaceEndLine) formattedStartData += " ";
 
-			const modifiedEvent = filter_output_values(event);
 			currentDate = new Date(modifiedEvent.end);
 			correctedEndDate = isNaN(modifiedEvent.end) ? "" : formatDateCatalan(currentDate.getDay(), currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear(), notShowingYear);
 			if (addEmptySpaceEndLine) correctedEndDate += " ";
@@ -111,7 +141,7 @@ class EndResultTables extends React.PureComponent {
 Change what the end user sees if you get a concrete event in mind (identify it via
 its name and change what its name will be in the output, for example, or remove 
 its final date...*/
-function filter_output_values(event) {
+function filter_output_values(event, options) {
 	let modifiedEvent = {};
 	for (let key in event) {
 		modifiedEvent[key] = event[key];
@@ -120,20 +150,21 @@ function filter_output_values(event) {
 	//Rules here
 	if (event.summary.search(/(avaluació|avaluacio)/gi) >= 0) {
 		modifiedEvent.summary = "Publicació notes";
+		if (options.provaValidacio === "0") {
+			modifiedEvent.end = modifiedEvent.start;
+			modifiedEvent.start = "";
+		}
 	}
 	if (event.summary.search(/proves/gi) >= 0) {
 		modifiedEvent.summary = modifiedEvent.summary.replace("Proves", "Prova");
 		modifiedEvent.summary = modifiedEvent.summary.replace("telemàtiques", "telemàtica");
 		modifiedEvent.summary = modifiedEvent.summary.replace("presencials", "presencial");
 	}
-	if (event.summary.search(/(prova|proves|avaluació|avaluacio)/gi) >= 0) {
-		modifiedEvent.end = NaN;
+	if (event.summary.search(/(prova|proves)/gi) >= 0) {
+		modifiedEvent.end = "";
 	}
 	return modifiedEvent;
 }
-
-export default EndResultTables;
-
 
 function orderArrayDescDates(eventArray) {
 	let tmpArray = eventArray.slice();
@@ -152,3 +183,4 @@ function orderArrayDescDates(eventArray) {
 	return tmpArray;
 }
 
+export default ResultsTable;

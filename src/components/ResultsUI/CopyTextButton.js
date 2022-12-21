@@ -1,7 +1,7 @@
 import React from "react";
 
 
-/*Button that lets you copy some linked (via id) text to the clipboard*/
+/*Button that lets you copy some linked (via its id) text to the clipboard*/
 class CopyTextButton extends React.PureComponent {
 	render(){
 		const linkedId = this.props.linkedId;

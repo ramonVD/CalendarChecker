@@ -1,10 +1,9 @@
 import React from "react";
 import {savePropertyCookie} from "../utils/CookieFunctions";
 
-/*Generates the options for ordering and some simple filtering of events, basically the "right side"
-of the options menu*/
+/*Generates the options UI for ordering the table, basically the "right side" of the options menu*/
 
-class OrderingOptions extends React.PureComponent {
+class OrderingPanel extends React.PureComponent {
 
 	render() {
 		const orderingByInitialDate = this.props.options.orderingByInitialDate;
@@ -105,4 +104,4 @@ class OrderingOptions extends React.PureComponent {
 
 }
 
-export default OrderingOptions;
+export default OrderingPanel;

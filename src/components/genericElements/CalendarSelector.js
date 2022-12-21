@@ -7,8 +7,8 @@ export let CALENDARS_URL = { GES: "a99rfo1vdupcbkhpmjgmt4amsc",
 					 BATX: "ioc.cat_7fqpufpt2a59n9usn3kkta6h5o", 
 					 Custom: "..."};
 
-/*UI Element that lets you select a predefined google calendar to load from a list. It also
-lets you add a custom google calendar via its id.*/
+/*UI Element that lets you select a predefined google calendar id to load from a list. It also
+lets you add a custom google calendar via writing its id.*/
 export class CalendarSelector extends React.PureComponent {
 
 	render() {

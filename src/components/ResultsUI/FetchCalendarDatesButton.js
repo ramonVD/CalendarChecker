@@ -1,4 +1,4 @@
-import {CALENDARS_URL} from "../generic/CalendarSelector";
+import {CALENDARS_URL} from "../genericElements/CalendarSelector";
 import React from "react";
 require('dotenv').config();
 
@@ -62,7 +62,7 @@ export default FetchCalendarDatesButton;
 
 
 
-/*Function to fetch the calendar data from the API*/
+/*Function to fetch the calendar data from the API, it should be in ical format (checked in CalendarEventsParser)*/
 function fetchDates(calendarID, callbackOK, callbackError) {
 	//Aconsegueix els valors de la URL en comptes d'usar testvalues...
 	const proxyUrl = process.env.REACT_APP_APIURL;

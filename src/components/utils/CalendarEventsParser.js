@@ -8,7 +8,17 @@ export function getFilteredEvents(data, options) {
 		options = {searchWord: /(lliurament|lliurment|proves|avaluació|avaluacio)/gi } 
 	}
 	if (data === undefined) { return []; }
-	const calendarData = ical.parseICS(data);
+
+	let calendarData = {};
+	/*Its been fed super bogus data (integers?, random dicts?)*/
+	try {
+		calendarData = ical.parseICS(data);
+	} catch (error) {
+		return [];
+	}
+	/*Should only reach an empty object due to trying to feed the app bogus strings*/
+	if (isEmpty(calendarData)) { return []; } 
+
 	let filteredEventsArray = [];
 	let filteredEvent = {};
 	let eventStartDate, eventFinalDate;
@@ -168,6 +178,7 @@ export function getSelectedEventsArray(eventArray, oldSelectedEvents, orderingAs
 
 
 export function formatDate(date, format) {
+	if (date === undefined || date === "") { return "";}
     const map = {
     	dd: zerosToTheLeft(date.getDate(),2),
         mm: zerosToTheLeft(date.getMonth() + 1, 2),
@@ -188,8 +199,13 @@ function zerosToTheLeft(originalStr, minLength) {
 /*Not returning year by default since it's what was originally done*/
 export function formatDateCatalan(diaSetmana, dia, mes, any, noYear) {
 	const dies = ["diumenge", "dilluns","dimarts","dimecres","dijous","divendres","dissabte"];
-	const mesos = ["gener","febrer","març","abril","maig","juny","juliol","agost","septembre","octubre","novembre","desembre"];
+	const mesos = ["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
 	const de = ["abril", "agost", "octubre"].includes(mesos[mes]) ? " d'" : " de ";
 	if (noYear !== undefined && !noYear) { return (dies[diaSetmana] + " " + dia + de + mesos[mes] + " de " + any);}
 	return (dies[diaSetmana] + " " + dia + de + mesos[mes]);
+}
+
+function isEmpty(obj) {
+	for (var i in obj) return false;
+	return true;
 }
