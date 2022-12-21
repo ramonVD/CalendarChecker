@@ -20,16 +20,19 @@ class FetchCalendarDatesButton extends React.Component {
 	render() {
 		let fetchDataButtonName;
 		let pressMeAnimation = (this.props.canLoadNewCalendar) ? " pressMeButton" : "";
-		if (this.state.loading) {
-			fetchDataButtonName = <span>Carregant&nbsp;&nbsp;<div className="spinner-border text-white" role="status">
-			<span className="visually-hidden">...</span></div></span>;
-		} else if (this.state.error === -1) {
+		
+		if (this.state.error === -1) {
 			fetchDataButtonName = "Error al descarregar el calendari, reintenta-ho!";
 		} else if (this.state.error === -2) {
 			fetchDataButtonName = "Adreça del calendari incorrecta, reintenta-ho!";
 		} else {
 			fetchDataButtonName = (this.props.canLoadNewCalendar) ? "Carrega les dades del calendari⠀▸" : "Calendari carregat";
 		}
+		if (this.state.loading) {
+			fetchDataButtonName = <span>Carregant&nbsp;&nbsp;<div className="spinner-border text-white" role="status">
+			<span className="visually-hidden">...</span></div></span>;
+		}
+
 		return (
 			<button className={"btn btn-primary btn-lg lh-sm" + pressMeAnimation} id="fetchCalendarBtn" onClick={() => {
 								if (this.state.loading) { return; }
@@ -81,9 +84,15 @@ function fetchDates(calendarID, callbackOK, callbackError) {
     	}})
     .then( (data) => {
     	const finalData = JSON.parse(data);
+		if (finalData.hasOwnProperty("errorText")) {
+			//Non existant calendar
+			callbackError(-2);
+			return;
+		}
     	callbackOK(finalData.data);
     }).catch((error) => {
-    	console.log(error)
+    		console.log(error);
+			//Error loading calendar. API error
 			callbackError(-1);
 			return;
 	});
